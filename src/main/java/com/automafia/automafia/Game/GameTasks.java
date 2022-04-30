@@ -10,10 +10,10 @@ import java.util.Date;
 @Component
 public class GameTasks {
 
-    private GameService gameService;
     public static final Logger log = LoggerFactory.getLogger(GameTasks.class);
 
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+    private GameService gameService;
 
     public GameTasks(GameService gameService) {
         this.gameService = gameService;

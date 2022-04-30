@@ -14,6 +14,8 @@ public class GameConfig {
     private int usersCount;
     private boolean isManiacExist;
     private boolean isDoctorExist;
+
+    //    TODO: THIS IS NOT WORK
     private boolean isMafiaUnanimousDecision;
 
     public GameConfig() {}

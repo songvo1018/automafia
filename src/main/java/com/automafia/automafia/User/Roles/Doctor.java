@@ -1,9 +1,12 @@
 package com.automafia.automafia.User.Roles;
 
+import com.automafia.automafia.User.AliveStatus;
 import com.automafia.automafia.User.User;
-import com.automafia.automafia.User.UserAction;
+import com.automafia.automafia.User.Actions.UserAction;
+import com.automafia.automafia.User.UserService;
 
 import java.util.List;
+import java.util.Optional;
 
 public class Doctor extends Role implements UserAction {
     private List<User> savedUsers;
@@ -21,7 +24,11 @@ public class Doctor extends Role implements UserAction {
     }
 
     @Override
-    public User effect(long userId) {
-        return null;
+    public User effect(long userId, UserService userService) {
+        Optional<User> target = userService.findById(userId);
+        if (target.isPresent() && (target.get().getAliveStatus() == AliveStatus.KILLED_MAFIA || target.get().getAliveStatus() == AliveStatus.KILLED_MAFIA)) {
+            target.get().setAliveStatus(AliveStatus.HEALED);
+        }
+        return target.orElse(null);
     }
 }

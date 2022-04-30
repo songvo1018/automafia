@@ -5,5 +5,6 @@ public enum AliveStatus {
     KILLED_MAFIA,
     KILLED_MANIAC,
     ARREST,
+    EXPOSED,
     HEALED
 }
