@@ -1,4 +1,4 @@
-package com.automafia.automafia.game;
+package com.automafia.automafia.Game;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;

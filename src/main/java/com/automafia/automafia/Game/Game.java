@@ -1,4 +1,6 @@
-package com.automafia.automafia.game;
+package com.automafia.automafia.Game;
+
+import com.automafia.automafia.Round.Round;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +16,7 @@ public class Game {
     private String creatorName;
     private int gameKey;
     private boolean finished;
+    private long currentRoundId;
 
     protected Game() {};
 
@@ -25,8 +28,10 @@ public class Game {
 
     @Override
     public String toString() {
-        return String.format("Game[id=%d, creatorName='%s', gameKey='%s', finished='%s']", id, creatorName, gameKey,
-                finished);
+        return String.format("Game[id=%d, creatorName='%s', gameKey='%s', finished='%s', roundId='%s']", id,
+                creatorName,
+                gameKey,
+                finished, currentRoundId);
     }
 
     public long getId() {
@@ -35,6 +40,14 @@ public class Game {
 
     public String getCreatorName() {
         return creatorName;
+    }
+
+    public long getCurrentRoundId() {
+        return currentRoundId;
+    }
+
+    public void setCurrentRoundId(long currentRoundId) {
+        this.currentRoundId = currentRoundId;
     }
 
     public int getGameKey() {
