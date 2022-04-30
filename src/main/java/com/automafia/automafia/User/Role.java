@@ -19,13 +19,25 @@ public class Role {
 
     private String roleTitle;
 
+    public Role() {}
+
     public Role(User user, Roles roleType) {
         this.user = user;
         this.roleType = roleType;
         this.roleTitle = roleType.name();
     }
 
-    public Role() {}
+    public User getUser() {
+        return user;
+    }
+
+    public Roles getRoleType() {
+        return roleType;
+    }
+
+    public String getRoleTitle() {
+        return roleTitle;
+    }
 
     public void setId(Long id) {
         this.id = id;

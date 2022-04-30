@@ -10,4 +10,10 @@ public interface IGameService {
     Game startGame(String creator);
 
     Game endGame(long id);
+
+    GameInfo getGameInfo(long id);
+
+    Game nextRound(long id);
+
+    Game connectTo(long gameId, String username);
 }

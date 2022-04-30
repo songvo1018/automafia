@@ -51,6 +51,19 @@ public class GameService implements IGameService {
         return game;
     }
 
+    @Override
+    public GameInfo getGameInfo(long id) {
+        Game game = gameRepository.findById(id);
+        List<User> usersInGame = userService.findByGameId(id);
+        GameInfo gameInfo = new GameInfo();
+        gameInfo.setGame(game);
+        System.out.println(gameInfo.toString());
+        gameInfo.setUsers(usersInGame);
+        System.out.println(gameInfo.toString());
+        return gameInfo;
+    }
+
+    @Override
     public Game nextRound(long id) {
         Game game = gameRepository.findById(id);
         if (game.isFinished()) return game;
@@ -62,6 +75,7 @@ public class GameService implements IGameService {
         return game;
     }
 
+    @Override
     public Game connectTo(long gameId, String username) {
         Game game = gameRepository.findById(gameId);
         User user = userService.createNewUser(game, username);

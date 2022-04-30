@@ -15,38 +15,72 @@ public class GameController {
         this.gameService = gameService;
     }
 
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
+    /**
+     * GET ALL GAMES INFO
+     * @return
+     */
+    @RequestMapping(value = "all", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     ResponseEntity<List<Game>> game() {
         return ResponseEntity.ok().body(gameService.getGamesInfo());
     }
 
-    @RequestMapping(value="/{id}/game-over", method = RequestMethod.PUT, produces = "application/json")
+    /**
+     * GET GAME INFO by ID
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    ResponseEntity<Game> endGame(@PathVariable("id") long id) {
-        return ResponseEntity.ok().body(gameService.endGame(id));
+    ResponseEntity<GameInfo> gameInfo(@RequestParam("id") long id) {
+        return ResponseEntity.ok().body(gameService.getGameInfo(id));
     }
 
-    @RequestMapping(value="/{id}/next-round", method = RequestMethod.PUT, produces = "application/json")
-    @ResponseBody
-    ResponseEntity<Game> nextRound(@PathVariable long id) {
-        return ResponseEntity.ok().body(gameService.nextRound(id));
-    }
-
+    /**
+     * GET GAME KEY by id
+     * @return
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     ResponseEntity<Integer> gameById(@PathVariable long id) {
         return ResponseEntity.ok().body(gameService.getGameKey(id));
     }
 
+    /**
+     * CONNECT TO GAME by ID with USERNAME
+     * @return
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     ResponseEntity<Game> connectTo(@PathVariable long id, @RequestParam("username") String username) {
         return ResponseEntity.ok().body(gameService.connectTo(id, username));
     }
 
+    /**
+     * CREATE NEW GAME with CREATOR
+     * @return
+     */
     @PostMapping
     ResponseEntity<Game> create(@RequestParam("creator") String creatorName) {
         return ResponseEntity.ok().body(gameService.startGame(creatorName));
+    }
+
+    /**
+     * END GAME by ID
+     * @return
+     */
+    @RequestMapping(value="/{id}/game-over", method = RequestMethod.PUT, produces = "application/json")
+    @ResponseBody
+    ResponseEntity<Game> endGame(@PathVariable("id") long id) {
+        return ResponseEntity.ok().body(gameService.endGame(id));
+    }
+
+    /**
+     * NEXT ROUND for GAME by ID
+     * @return
+     */
+    @RequestMapping(value="/{id}/next-round", method = RequestMethod.PUT, produces = "application/json")
+    @ResponseBody
+    ResponseEntity<Game> nextRound(@PathVariable long id) {
+        return ResponseEntity.ok().body(gameService.nextRound(id));
     }
 }

@@ -26,17 +26,49 @@ public class User {
 
     private AliveStatus aliveStatus ;
 
-    public Role getRole() {
-        return role;
-    }
-    public void setRole(Role role) {
-        this.role = role;
-    }
+    protected User() {}
 
     public User(Game game, String name) {
         this.game = game;
         this.name = name;
     }
 
-    protected User() {}
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public MoveStatus getMoveStatus() {
+        return moveStatus;
+    }
+
+    public void setMoveStatus(MoveStatus moveStatus) {
+        this.moveStatus = moveStatus;
+    }
+
+    public AliveStatus getAliveStatus() {
+        return aliveStatus;
+    }
+
+    public void setAliveStatus(AliveStatus aliveStatus) {
+        this.aliveStatus = aliveStatus;
+    }
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }
