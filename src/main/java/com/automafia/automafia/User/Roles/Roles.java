@@ -1,4 +1,4 @@
-package com.automafia.automafia.User;
+package com.automafia.automafia.User.Roles;
 
 public enum Roles {
     CITIZEN,

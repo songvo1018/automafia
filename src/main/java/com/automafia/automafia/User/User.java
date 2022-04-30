@@ -1,6 +1,7 @@
 package com.automafia.automafia.User;
 
 import com.automafia.automafia.Game.Game;
+import com.automafia.automafia.User.Roles.Role;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;

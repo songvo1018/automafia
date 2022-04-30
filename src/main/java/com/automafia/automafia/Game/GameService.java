@@ -2,12 +2,13 @@ package com.automafia.automafia.Game;
 
 import com.automafia.automafia.Round.Round;
 import com.automafia.automafia.Round.RoundService;
+import com.automafia.automafia.User.Roles.Roles;
 import com.automafia.automafia.User.User;
 import com.automafia.automafia.User.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class GameService implements IGameService {
@@ -34,7 +35,7 @@ public class GameService implements IGameService {
     @Override
     public Game startGame(String creator) {
         Game createdGame = new Game(creator);
-        User user = userService.createNewUser(createdGame, creator);
+        User user = userService.createNewUser(createdGame, creator, getFreeRolesForGame(createdGame.getId()));
         Round currentRound = roundService.createNewRound(0);
         createdGame.setCurrentRoundId(currentRound.getId());
         gameRepository.save(createdGame);
@@ -78,7 +79,34 @@ public class GameService implements IGameService {
     @Override
     public Game connectTo(long gameId, String username) {
         Game game = gameRepository.findById(gameId);
-        User user = userService.createNewUser(game, username);
+        if (game == null) {
+            throw new IllegalArgumentException("Game with id= " + gameId + " not found");
+        }
+        User user = userService.createNewUser(game, username, getFreeRolesForGame(gameId));
         return game;
+    }
+
+    public List<Roles> getFreeRolesForGame(long id) {
+        GameInfo gameInfo = getGameInfo(id);
+//        TODO: REPLACE TO CONFIGURATION GAME IN CREATION TIME
+        List<Roles> acceptedRole = new ArrayList<>();
+        acceptedRole.add(Roles.MAFIA);
+        acceptedRole.add(Roles.MAFIA);
+        acceptedRole.add(Roles.CITIZEN);
+        acceptedRole.add(Roles.CITIZEN);
+        acceptedRole.add(Roles.CITIZEN);
+        acceptedRole.add(Roles.MANIAC);
+        acceptedRole.add(Roles.DETECTIVE);
+        List<User> usersInGame = gameInfo.getUsers();
+        List<Roles> notUsedRoles = new ArrayList<>();
+        notUsedRoles.addAll(acceptedRole);
+
+        for (User user: usersInGame) {
+            Roles busyRole = user.getRole().getRoleType();
+            if (acceptedRole.contains(busyRole)) {
+                notUsedRoles.remove(busyRole);
+            }
+        }
+        return notUsedRoles;
     }
 }
