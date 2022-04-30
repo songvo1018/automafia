@@ -1,9 +1,11 @@
 package com.automafia.automafia.Round;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.automafia.automafia.Round.UserList.UserList;
+import com.automafia.automafia.User.User;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Round {
@@ -12,6 +14,29 @@ public class Round {
     private long id;
 
     private int roundNumber;
+
+//    @OneToOne(cascade = CascadeType.MERGE, fetch=FetchType.EAGER)
+//    @PrimaryKeyJoinColumn
+//    private UserList userList;
+//
+//    public UserList getUserList() {
+//        return userList;
+//    }
+//
+//    public void setUserList(UserList userList) {
+//        this.userList = userList;
+//    }
+
+//    public List<User> getUserList() {
+//        return userList;
+//    }
+//
+//    public void setUserList(List<User> userList) {
+//        this.userList = userList;
+//    }
+
+//    @OneToMany(targetEntity = User.class, mappedBy = "user", fetch = FetchType.EAGER)
+//    private List<User> userList;
 
     private boolean roundFinished;
 
@@ -23,6 +48,7 @@ public class Round {
     }
     public Round(int roundNumber) {
         this.roundNumber = roundNumber;
+//        this.userList = new UserList(new ArrayList<User>());
     }
 
     public boolean isRoundFinished() {

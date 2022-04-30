@@ -1,6 +1,7 @@
 package com.automafia.automafia.User;
 
 import com.automafia.automafia.Game.Game;
+import com.automafia.automafia.Round.Round;
 import com.automafia.automafia.User.Roles.Role;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -21,6 +22,10 @@ public class User {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     private Game game;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Round round;
     private String name;
 
     private MoveStatus moveStatus;

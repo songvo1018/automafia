@@ -4,13 +4,14 @@ import com.automafia.automafia.Game.Config.GameConfig;
 import com.automafia.automafia.Game.Config.GameConfigService;
 import com.automafia.automafia.Round.Round;
 import com.automafia.automafia.Round.RoundService;
-import com.automafia.automafia.User.Roles.Roles;
+import com.automafia.automafia.Round.UserList.UserList;
+import com.automafia.automafia.User.Roles.Role;
 import com.automafia.automafia.User.User;
 import com.automafia.automafia.User.UserService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GameService implements IGameService {
@@ -48,9 +49,13 @@ public class GameService implements IGameService {
         Game createdGame = new Game(creator, gameConfig);
         gameRepository.save(createdGame);
         GameInfo gameInfo = getGameInfo(createdGame.getId());
-        userService.createNewUser(createdGame, creator, gameConfigService.getFreeRolesForGame(gameInfo));
+        User user = userService.createNewUser(createdGame, creator, gameConfigService.getFreeRolesForGame(gameInfo));
 
         Round currentRound = roundService.createNewRound(0);
+////        TODO: THINK ABOUT NAMING
+//        currentRound.getUserList().add(user);
+//        roundService.save(currentRound);
+
         createdGame.setCurrentRoundId(currentRound.getId());
         createdGame.setAcceptedRoles(gameConfigService.getFreeRolesForGame(gameInfo).toString());
         createdGame.setFreeRoles(gameConfigService.getFreeRolesForGame(gameInfo).toString());
@@ -84,6 +89,14 @@ public class GameService implements IGameService {
         if (game.isFinished()) return game;
         Round lastRound = roundService.endLastRound(game.getCurrentRoundId());
         Round newRound = roundService.createNewRound(lastRound.getRoundNumber());
+//        List<User> userList = newRound.getUserList();
+//        User nextUser = userList.get(userList.size());
+//        Role userRole = nextUser.getRole();
+//        System.out.println(userRole.toString());
+//        userList.remove(userList.size());
+//        newRound.setUserList(userList);
+//        roundService.save(newRound);
+
         game.setCurrentRoundId(newRound.getId());
         game.setRoundNumber(newRound.getRoundNumber());
         gameRepository.save(game);
@@ -98,6 +111,15 @@ public class GameService implements IGameService {
         }
         GameInfo gameInfo = getGameInfo(gameId);
         User user = userService.createNewUser(game, username, gameConfigService.getFreeRolesForGame(gameInfo));
+//
+//        Optional<Round> currentRound = roundService.getRoundById(game.getCurrentRoundId());
+//        if (!currentRound.isPresent()) {
+//            throw new IllegalStateException("Round by id=" + game.getCurrentRoundId() + " not found");
+//        }
+////        TODO: PUSH TO HEAD user
+//        currentRound.ifPresent(round -> round.getUserList().add(round.getUserList().size(), user));
+//        roundService.save(currentRound.get());
+
         game.setAcceptedRoles(gameConfigService.getFreeRolesForGame(gameInfo).toString());
         game.setFreeRoles(gameConfigService.getFreeRolesForGame(gameInfo).toString());
         gameRepository.save(game);

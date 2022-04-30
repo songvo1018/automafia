@@ -5,14 +5,22 @@ import com.automafia.automafia.User.User;
 import com.automafia.automafia.User.Actions.UserAction;
 import com.automafia.automafia.User.UserService;
 
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.util.Optional;
 
+@Entity
 public class Maniac extends Role implements UserAction {
+    @ManyToOne
     private User preyUser = null;
 
     public Maniac(User user, Roles roleType) {
         super(user, roleType);
     }
+
+    public Maniac() {}
 
     public User getPreyUser() {
         return preyUser;

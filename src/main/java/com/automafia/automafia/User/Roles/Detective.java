@@ -5,11 +5,17 @@ import com.automafia.automafia.User.User;
 import com.automafia.automafia.User.Actions.UserAction;
 import com.automafia.automafia.User.UserService;
 
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.util.List;
 import java.util.Optional;
 
+@Entity
 public class Detective extends Role implements UserAction {
+    @OneToMany
     private List<User> detectedUsers;
+
+    public Detective() {}
 
     public List<User> getDetectedUsers() {
         return detectedUsers;
