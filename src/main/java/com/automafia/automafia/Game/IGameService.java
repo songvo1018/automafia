@@ -7,7 +7,8 @@ public interface IGameService {
 
     Integer getGameKey(long id);
 
-    Game startGame(String creator);
+    Game startGame(String creator, int usersCount, boolean isManiacExist, boolean isDoctorExist,
+                   boolean isMafiaUnanimousDecision);
 
     Game endGame(long id);
 

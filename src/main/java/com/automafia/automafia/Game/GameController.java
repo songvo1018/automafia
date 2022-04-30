@@ -60,8 +60,14 @@ public class GameController {
      * @return
      */
     @PostMapping
-    ResponseEntity<Game> create(@RequestParam("creator") String creatorName) {
-        return ResponseEntity.ok().body(gameService.startGame(creatorName));
+    ResponseEntity<Game> create(
+            @RequestParam("creator") String creatorName,
+            @RequestParam("usersCount") int usersCount,
+            @RequestParam("isManiacExist") boolean isManiacExist,
+            @RequestParam("isDoctorExist") boolean isDoctorExist,
+            @RequestParam("isMafiaUnanimousDecision") boolean isMafiaUnanimousDecision
+    ) {
+        return ResponseEntity.ok().body(gameService.startGame(creatorName, usersCount, isManiacExist, isDoctorExist, isMafiaUnanimousDecision));
     }
 
     /**

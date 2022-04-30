@@ -1,9 +1,8 @@
 package com.automafia.automafia.Game;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.automafia.automafia.Game.Config.GameConfig;
+
+import javax.persistence.*;
 
 @Entity
 public class Game {
@@ -17,12 +16,21 @@ public class Game {
     private long currentRoundId;
     private int roundNumber;
 
+    @ManyToOne
+    @JoinColumn(name = "game_config", nullable = false)
+    private GameConfig gameConfig;
+
+    private String acceptedRoles;
+
+    private String freeRoles;
+
     protected Game() {};
 
-    public Game(String creatorName) {
+    public Game(String creatorName, GameConfig gameConfig) {
         this.creatorName = creatorName;
         this.gameKey = creatorName.hashCode();
         this.finished = false;
+        this.gameConfig = gameConfig;
     }
 
     @Override
@@ -40,6 +48,10 @@ public class Game {
         return id;
     }
 
+    public GameConfig getGameConfig() {
+        return gameConfig;
+    }
+
     public String getCreatorName() {
         return creatorName;
     }
@@ -47,14 +59,13 @@ public class Game {
     public long getCurrentRoundId() {
         return currentRoundId;
     }
+
     public int getRoundNumber() {
         return roundNumber;
     }
-
     public void setRoundNumber(int roundNumber) {
         this.roundNumber = roundNumber;
     }
-
     public void setCurrentRoundId(long currentRoundId) {
         this.currentRoundId = currentRoundId;
     }
@@ -70,4 +81,21 @@ public class Game {
     public boolean isFinished() {
         return finished;
     }
+
+    public String getAcceptedRoles() {
+        return acceptedRoles;
+    }
+
+    public void setAcceptedRoles(String acceptedRoles) {
+        this.acceptedRoles = acceptedRoles;
+    }
+
+    public String getFreeRoles() {
+        return freeRoles;
+    }
+
+    public void setFreeRoles(String freeRoles) {
+        this.freeRoles = freeRoles;
+    }
 }
+

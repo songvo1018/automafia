@@ -22,7 +22,6 @@ public class Round {
         return String.format("Game[id=%d, roundNumber='%s', roundFinished='%s']", id, roundNumber, roundFinished );
     }
     public Round(int roundNumber) {
-        System.out.println("CREATED ROUND SASA?");
         this.roundNumber = roundNumber;
     }
 
