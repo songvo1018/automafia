@@ -39,6 +39,12 @@ public class GameController {
         return ResponseEntity.ok().body(gameService.getGameKey(id));
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    ResponseEntity<Game> connectTo(@PathVariable long id, @RequestParam("username") String username) {
+        return ResponseEntity.ok().body(gameService.connectTo(id, username));
+    }
+
     @PostMapping
     ResponseEntity<Game> create(@RequestParam("creator") String creatorName) {
         return ResponseEntity.ok().body(gameService.startGame(creatorName));
