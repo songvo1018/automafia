@@ -4,7 +4,6 @@ import com.automafia.automafia.Round.Round;
 import com.automafia.automafia.Round.RoundService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,16 +17,8 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public String getGamesInfo() {
-        List<Game> games = gameRepository.findByFinished(false);
-        List<String> gamesInfo = new ArrayList<String>();
-        if (games.size() > 0) {
-            for (Game game : games) {
-                gamesInfo.add(game.toString());
-            }
-            return gamesInfo.toString();
-        }
-        return "Games not created";
+    public List<Game> getGamesInfo() {
+        return gameRepository.findByFinished(false);
     }
 
     @Override
@@ -47,6 +38,7 @@ public class GameService implements IGameService {
     @Override
     public Game endGame(long id) {
         Game game = gameRepository.findById(id);
+        if (game.isFinished()) return game;
         game.setFinished(true);
         roundService.endLastRound(game.getCurrentRoundId());
         gameRepository.save(game);
@@ -55,9 +47,11 @@ public class GameService implements IGameService {
 
     public Game nextRound(long id) {
         Game game = gameRepository.findById(id);
+        if (game.isFinished()) return game;
         Round lastRound = roundService.endLastRound(game.getCurrentRoundId());
         Round newRound = roundService.createNewRound(lastRound.getRoundNumber());
         game.setCurrentRoundId(newRound.getId());
+        game.setRoundNumber(newRound.getRoundNumber());
         gameRepository.save(game);
         return game;
     }

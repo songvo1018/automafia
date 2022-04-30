@@ -1,7 +1,5 @@
 package com.automafia.automafia.Game;
 
-import com.automafia.automafia.Round.Round;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,6 +15,7 @@ public class Game {
     private int gameKey;
     private boolean finished;
     private long currentRoundId;
+    private int roundNumber;
 
     protected Game() {};
 
@@ -28,10 +27,13 @@ public class Game {
 
     @Override
     public String toString() {
-        return String.format("Game[id=%d, creatorName='%s', gameKey='%s', finished='%s', roundId='%s']", id,
-                creatorName,
-                gameKey,
-                finished, currentRoundId);
+        return "Game {" + id + ", " +
+                "creatorName: " + creatorName + ", " +
+                "gameKey: " + gameKey + ", " +
+                "finished: " + finished + ", " +
+                "roundId: " + currentRoundId + ", " +
+                "roundNumber: " + roundNumber + ", " +
+                "}";
     }
 
     public long getId() {
@@ -45,6 +47,13 @@ public class Game {
     public long getCurrentRoundId() {
         return currentRoundId;
     }
+    public int getRoundNumber() {
+        return roundNumber;
+    }
+
+    public void setRoundNumber(int roundNumber) {
+        this.roundNumber = roundNumber;
+    }
 
     public void setCurrentRoundId(long currentRoundId) {
         this.currentRoundId = currentRoundId;
@@ -54,10 +63,11 @@ public class Game {
         return gameKey;
     }
 
-    public Game setFinished(boolean status) {
-        System.out.println("before set: " + this.finished);
+    public void setFinished(boolean status) {
         this.finished = status;
-        System.out.println("after set: " + this.finished);
-        return this;
+    }
+
+    public boolean isFinished() {
+        return finished;
     }
 }

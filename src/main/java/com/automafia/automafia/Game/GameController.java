@@ -3,6 +3,8 @@ package com.automafia.automafia.Game;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/games")
@@ -15,7 +17,7 @@ public class GameController {
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    ResponseEntity<String> game() {
+    ResponseEntity<List<Game>> game() {
         return ResponseEntity.ok().body(gameService.getGamesInfo());
     }
 
@@ -38,8 +40,7 @@ public class GameController {
     }
 
     @PostMapping
-    ResponseEntity<String> create(@RequestParam("creator") String creatorName) {
-        Game created = gameService.startGame(creatorName);
-        return ResponseEntity.ok().body(created.toString());
+    ResponseEntity<Game> create(@RequestParam("creator") String creatorName) {
+        return ResponseEntity.ok().body(gameService.startGame(creatorName));
     }
 }

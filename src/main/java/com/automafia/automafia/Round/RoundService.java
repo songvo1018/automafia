@@ -8,7 +8,6 @@ import java.util.Optional;
 public class RoundService implements IRoundService {
 
     private RoundRepository roundRepository;
-
     public RoundService(RoundRepository roundRepository) {
         this.roundRepository = roundRepository;
     }
@@ -19,9 +18,9 @@ public class RoundService implements IRoundService {
     }
 
     public Round createNewRound(int roundNumber) {
-        Round rnd = new Round(++roundNumber);
-        roundRepository.save(rnd);
-        return rnd;
+        Round round = new Round(++roundNumber);
+        roundRepository.save(round);
+        return round;
     }
 
     public Round setRoundAsFinished(long id) {
@@ -34,7 +33,7 @@ public class RoundService implements IRoundService {
     public Round endLastRound(long id) {
         Optional<Round> endedRound = getRoundById(id);
         if (!endedRound.isPresent()) {
-            throw new IllegalStateException("ended round not found");
+            throw new IllegalStateException("last round not found");
         }
         setRoundAsFinished(id);
         return endedRound.get();

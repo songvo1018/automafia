@@ -22,6 +22,6 @@ public class GameTasks {
 //    @Scheduled(fixedRate=10000)
     public void reportCurrentTime(){
         log.info("The time is now {}", dateFormat.format(new Date()));
-        log.info("Games Info: " + gameService.getGamesInfo());
+        log.info("Games Info: " + gameService.getGamesInfo().toString());
     }
 }

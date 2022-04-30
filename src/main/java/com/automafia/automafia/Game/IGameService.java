@@ -1,7 +1,9 @@
 package com.automafia.automafia.Game;
 
+import java.util.List;
+
 public interface IGameService {
-    String getGamesInfo();
+    List<Game> getGamesInfo();
 
     Integer getGameKey(long id);
 
