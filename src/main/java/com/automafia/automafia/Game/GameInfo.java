@@ -5,6 +5,7 @@ import com.automafia.automafia.User.User;
 import java.util.List;
 
 public class GameInfo {
+//    TODO: Implement additional constuctor
     public List<User> getUsers() {
         return users;
     }

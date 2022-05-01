@@ -1,5 +1,6 @@
 package com.automafia.automafia.Game;
 
+import com.automafia.automafia.User.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -88,5 +89,15 @@ public class GameController {
     @ResponseBody
     ResponseEntity<Game> nextRound(@PathVariable long id) {
         return ResponseEntity.ok().body(gameService.nextRound(id));
+    }
+
+    /**
+     * NEXT GO for GAME by ID
+     * @return
+     */
+    @RequestMapping(value="/{id}/next-go", method = RequestMethod.PUT, produces = "application/json")
+    @ResponseBody
+    ResponseEntity<User> nextGo(@PathVariable long id) {
+        return ResponseEntity.ok().body(gameService.nextToGo(id));
     }
 }

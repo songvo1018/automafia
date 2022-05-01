@@ -1,5 +1,7 @@
 package com.automafia.automafia.Game;
 
+import com.automafia.automafia.User.MoveStatus;
+import com.automafia.automafia.User.User;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;

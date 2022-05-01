@@ -18,9 +18,16 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    public User save(User user) {
+        userRepository.save(user);
+        return user;
+    }
     public User createNewUser(Game game, String name, List<Roles> freeRolesForGame) {
         User user = new User(game, name);
+//        TODO: IF WE TRY CONNECT LAST USER WE HAVE index out of bound
         user.setRole(roleService.getRandomRoleInGameFor(user, freeRolesForGame));
+        user.setAliveStatus(AliveStatus.ALIVE);
+        user.setMoveStatus(MoveStatus.READY_MOVE);
         userRepository.save(user);
         return user;
     }
@@ -31,5 +38,28 @@ public class UserService {
 
     public List<User> findByGameId(long id) {
         return userRepository.findAllByGameId(id);
+    }
+
+    public List<User> findAllByGameId(long id) {
+        return userRepository.findAllByGameId(id);
+    }
+
+    public List<User> setMoveStatusToAliveUsers(Game game, MoveStatus moveStatus) {
+        List<User> alive = findAliveByGame(game);
+        for (User user : alive) {
+            user.setMoveStatus(moveStatus);
+            save(user);
+        }
+        return alive;
+    }
+    public List<User> findAliveByGame(Game game) {
+        return userRepository.findByGameAndAliveStatus(game, AliveStatus.ALIVE);
+    }
+
+    public boolean existUserMovedStatus(Game game, AliveStatus aliveStatus, MoveStatus status) {
+        return userRepository.existsUserByGameAndAliveStatusAndMoveStatus(game, aliveStatus, status);
+    }
+    public User findFirstByGameIdAndAliveStatusAndMovedStatus(Game game, MoveStatus status, AliveStatus aliveStatus) {
+        return userRepository.findFirstByGameAndMoveStatusIsAndAliveStatus(game, status, aliveStatus);
     }
 }

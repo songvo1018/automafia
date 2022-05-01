@@ -1,6 +1,5 @@
 package com.automafia.automafia.Round;
 
-import com.automafia.automafia.Round.UserList.UserList;
 import com.automafia.automafia.User.User;
 
 import javax.persistence.*;
@@ -14,29 +13,6 @@ public class Round {
     private long id;
 
     private int roundNumber;
-
-//    @OneToOne(cascade = CascadeType.MERGE, fetch=FetchType.EAGER)
-//    @PrimaryKeyJoinColumn
-//    private UserList userList;
-//
-//    public UserList getUserList() {
-//        return userList;
-//    }
-//
-//    public void setUserList(UserList userList) {
-//        this.userList = userList;
-//    }
-
-//    public List<User> getUserList() {
-//        return userList;
-//    }
-//
-//    public void setUserList(List<User> userList) {
-//        this.userList = userList;
-//    }
-
-//    @OneToMany(targetEntity = User.class, mappedBy = "user", fetch = FetchType.EAGER)
-//    private List<User> userList;
 
     private boolean roundFinished;
 

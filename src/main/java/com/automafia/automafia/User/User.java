@@ -23,9 +23,6 @@ public class User {
     @JsonManagedReference
     private Game game;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private Round round;
     private String name;
 
     private MoveStatus moveStatus;
