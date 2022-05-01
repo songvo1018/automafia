@@ -7,11 +7,12 @@ import com.automafia.automafia.User.UserService;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Entity
-public class Detective extends Role implements UserAction {
+public class Detective extends Role {
     @OneToMany
     private List<User> detectedUsers;
 
@@ -29,11 +30,13 @@ public class Detective extends Role implements UserAction {
         super(user, roleType);
     }
 
-    @Override
     public User effect(long userId, UserService userService) {
         Optional<User> target = userService.findById(userId);
         if (target.isPresent() && target.get().getRole().getRoleType() == Roles.MAFIA) {
             target.get().setAliveStatus(AliveStatus.EXPOSED);
+            List<User> updatedDetectedUsers = new ArrayList<>();
+            updatedDetectedUsers.add(target.get());
+            setDetectedUsers(updatedDetectedUsers);
         }
         return target.orElse(null);
     }

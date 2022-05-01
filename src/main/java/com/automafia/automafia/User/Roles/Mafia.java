@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 import java.util.Optional;
 
 @Entity
-public class Mafia extends Role implements UserAction {
+public class Mafia extends Role {
 
     public Mafia(User user, Roles roleType) {
         super(user, roleType);
@@ -17,7 +17,6 @@ public class Mafia extends Role implements UserAction {
 
     public Mafia() {}
 
-    @Override
     public User effect(long userId, UserService userService) {
         Optional<User> target = userService.findById(userId);
 //        TODO: THINK ABOUT Unanimously mafioso

@@ -59,7 +59,12 @@ public class UserService {
     public boolean existUserMovedStatus(Game game, AliveStatus aliveStatus, MoveStatus status) {
         return userRepository.existsUserByGameAndAliveStatusAndMoveStatus(game, aliveStatus, status);
     }
-    public User findFirstByGameIdAndAliveStatusAndMovedStatus(Game game, MoveStatus status, AliveStatus aliveStatus) {
-        return userRepository.findFirstByGameAndMoveStatusIsAndAliveStatus(game, status, aliveStatus);
+    public User findFirstByGameAndMoveStatusIsAndAliveStatusAndRoleTypeIsNot(
+            Game game,
+            MoveStatus status,
+            AliveStatus aliveStatus,
+            Roles roleType) {
+        return userRepository.findFirstByGameAndMoveStatusIsAndAliveStatusAndRoleTypeIsNot(game, status, aliveStatus,
+                roleType);
     }
 }

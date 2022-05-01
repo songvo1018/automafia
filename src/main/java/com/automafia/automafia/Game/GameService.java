@@ -6,10 +6,12 @@ import com.automafia.automafia.Round.Round;
 import com.automafia.automafia.Round.RoundService;
 import com.automafia.automafia.User.AliveStatus;
 import com.automafia.automafia.User.MoveStatus;
+import com.automafia.automafia.User.Roles.Roles;
 import com.automafia.automafia.User.User;
 import com.automafia.automafia.User.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,17 +96,24 @@ public class GameService implements IGameService {
         return game;
     }
 
-    public User nextToGo(long gameId) {
+    public User nextUserTurnToGo(long gameId) {
         Game game = gameRepository.findById(gameId);
         Optional<Round> currentRound = roundService.getRoundById(game.getCurrentRoundId());
         if (currentRound.isPresent()) {
             if (!userService.existUserMovedStatus(game, AliveStatus.ALIVE, MoveStatus.READY_MOVE)) {
                 throw new IllegalStateException("All users be moved in this round for game id=" + gameId);
             }
-            User userToGo = userService.findFirstByGameIdAndAliveStatusAndMovedStatus(
+            User userToGo = userService.findFirstByGameAndMoveStatusIsAndAliveStatusAndRoleTypeIsNot(
                     game,
                     MoveStatus.READY_MOVE,
-                    AliveStatus.ALIVE);
+                    AliveStatus.ALIVE,
+                    Roles.CITIZEN);
+
+//            TODO: NEED STORE TARGET IN ROLE OR USER from user request
+            List<User> pseudorandomUserList = userService.findAliveByGame(game);
+            Collections.shuffle(pseudorandomUserList);
+            userToGo.getRole().effect(pseudorandomUserList.get(0).getId(), userService);
+
             userToGo.setMoveStatus(MoveStatus.MOVED);
             userService.save(userToGo);
             return userToGo;

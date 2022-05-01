@@ -12,7 +12,7 @@ import javax.persistence.OneToMany;
 import java.util.Optional;
 
 @Entity
-public class Maniac extends Role implements UserAction {
+public class Maniac extends Role {
     @ManyToOne
     private User preyUser = null;
 
@@ -29,8 +29,9 @@ public class Maniac extends Role implements UserAction {
     public void setPreyUser(User preyUser) {
         this.preyUser = preyUser;
     }
-    @Override
+
     public User effect(long userId, UserService userService) {
+        
         Optional<User> target = userService.findById(userId);
         if (target.isPresent() && getPreyUser() == null) {
             target.get().setAliveStatus(AliveStatus.KILLED_MANIAC);

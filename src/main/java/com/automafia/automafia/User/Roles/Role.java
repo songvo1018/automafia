@@ -1,9 +1,11 @@
 package com.automafia.automafia.User.Roles;
 
 import com.automafia.automafia.User.User;
+import com.automafia.automafia.User.UserService;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import java.util.Optional;
 
 @Entity
 public class Role {
@@ -45,5 +47,10 @@ public class Role {
 
     public Long getId() {
         return id;
+    }
+    
+    public User effect(long userId, UserService userService) {
+        Optional<User> user = userService.findById(userId);
+        return user.orElse(null);
     }
 }

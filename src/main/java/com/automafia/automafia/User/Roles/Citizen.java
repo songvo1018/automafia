@@ -1,6 +1,7 @@
 package com.automafia.automafia.User.Roles;
 
 import com.automafia.automafia.User.User;
+import com.automafia.automafia.User.UserService;
 
 import javax.persistence.Entity;
 
@@ -12,4 +13,8 @@ public class Citizen extends Role {
     }
 
     public Citizen() {}
+
+    public User effect(long userId, UserService userService) {
+        return super.effect(userId, userService);
+    }
 }

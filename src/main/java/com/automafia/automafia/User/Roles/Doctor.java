@@ -8,11 +8,12 @@ import com.automafia.automafia.User.UserService;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Entity
-public class Doctor extends Role implements UserAction {
+public class Doctor extends Role {
     @ManyToMany
     private List<User> savedUsers;
 
@@ -30,11 +31,13 @@ public class Doctor extends Role implements UserAction {
         this.savedUsers = savedUsers;
     }
 
-    @Override
     public User effect(long userId, UserService userService) {
         Optional<User> target = userService.findById(userId);
         if (target.isPresent() && (target.get().getAliveStatus() == AliveStatus.KILLED_MAFIA || target.get().getAliveStatus() == AliveStatus.KILLED_MAFIA)) {
             target.get().setAliveStatus(AliveStatus.HEALED);
+            List<User> updatedSavedUsers = new ArrayList<>();
+            updatedSavedUsers.add(target.get());
+            setSavedUsers(updatedSavedUsers);
         }
         return target.orElse(null);
     }

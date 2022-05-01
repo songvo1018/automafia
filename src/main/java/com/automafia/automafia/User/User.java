@@ -3,6 +3,7 @@ package com.automafia.automafia.User;
 import com.automafia.automafia.Game.Game;
 import com.automafia.automafia.Round.Round;
 import com.automafia.automafia.User.Roles.Role;
+import com.automafia.automafia.User.Roles.Roles;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -23,8 +24,9 @@ public class User {
     @JsonManagedReference
     private Game game;
 
-    private String name;
+    private Roles roleType;
 
+    private String name;
     private MoveStatus moveStatus;
 
     private AliveStatus aliveStatus ;
@@ -38,6 +40,14 @@ public class User {
 
     public Game getGame() {
         return game;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public Roles getRoleType() {
+        return roleType;
     }
 
     public void setGame(Game game) {
@@ -73,5 +83,6 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+        this.roleType = role.getRoleType();
     }
 }

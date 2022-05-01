@@ -98,6 +98,6 @@ public class GameController {
     @RequestMapping(value="/{id}/next-go", method = RequestMethod.PUT, produces = "application/json")
     @ResponseBody
     ResponseEntity<User> nextGo(@PathVariable long id) {
-        return ResponseEntity.ok().body(gameService.nextToGo(id));
+        return ResponseEntity.ok().body(gameService.nextUserTurnToGo(id));
     }
 }
