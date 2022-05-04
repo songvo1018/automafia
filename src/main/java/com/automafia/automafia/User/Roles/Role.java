@@ -14,11 +14,21 @@ public class Role {
     @Basic(optional = false)
     @Column(name = "id",unique=true, nullable = false)
     private Long id;
+
+    /**
+     * User who is assigned this role
+     */
     @ManyToOne(fetch=FetchType.LAZY, cascade= CascadeType.ALL)
     @JsonBackReference
     private User user;
+    /**
+     * Role type
+     */
     private Roles roleType;
 
+    /**
+     * Value to view
+     */
     private String roleTitle;
 
     public Role() {}

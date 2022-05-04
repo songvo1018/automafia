@@ -10,24 +10,58 @@ public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    /**
+     * Value to view name of game creator
+     */
     private String creatorName;
+
+    /**
+     * Value not used
+     */
     private int gameKey;
+
+    /**
+     * State of finished game
+     */
     private boolean finished;
+
+    /**
+     * Unique ID current Round Entity
+     */
     private long currentRoundId;
+
+    /**
+     * Current round in the game
+     */
     private int roundNumber;
 
+    /**
+     * Game configuration relation
+     */
     @ManyToOne
     @JoinColumn(name = "game_config", nullable = false)
     private GameConfig gameConfig;
 
+    /**
+     * Value to view accepted roles
+     */
     private String acceptedRoles;
 
+    /**
+     * Value to view free roles
+     */
     private String freeRoles;
+
+    /**
+     * Count connected users to game
+     */
+    private int countConnectedUsers;
 
     protected Game() {};
 
     public Game(String creatorName, GameConfig gameConfig) {
         this.creatorName = creatorName;
+        this.countConnectedUsers = 1;
         this.gameKey = creatorName.hashCode();
         this.finished = false;
         this.gameConfig = gameConfig;
@@ -63,13 +97,13 @@ public class Game {
     public int getRoundNumber() {
         return roundNumber;
     }
+
     public void setRoundNumber(int roundNumber) {
         this.roundNumber = roundNumber;
     }
     public void setCurrentRoundId(long currentRoundId) {
         this.currentRoundId = currentRoundId;
     }
-
     public int getGameKey() {
         return gameKey;
     }
@@ -96,6 +130,14 @@ public class Game {
 
     public void setFreeRoles(String freeRoles) {
         this.freeRoles = freeRoles;
+    }
+
+    public int getCountConnectedUsers() {
+        return countConnectedUsers;
+    }
+
+    public void setUsersConnectedCount(int countConnectedUsersToGame) {
+        this.countConnectedUsers = countConnectedUsersToGame;
     }
 }
 

@@ -12,8 +12,14 @@ public class Round {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    /**
+     * Current round number in the linked game
+     */
     private int roundNumber;
 
+    /**
+     * State of round
+     */
     private boolean roundFinished;
 
     protected Round() {}

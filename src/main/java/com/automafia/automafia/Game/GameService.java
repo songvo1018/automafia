@@ -51,13 +51,18 @@ public class GameService implements IGameService {
         Game createdGame = new Game(creator, gameConfig);
         gameRepository.save(createdGame);
         GameInfo gameInfo = getGameInfo(createdGame.getId());
+        User user = userService.createNewUser(createdGame, creator,
+                gameConfigService.getFreeRolesForGame(gameInfo));
+        createdGame.setUsersConnectedCount(userService.getCountConnectedUsersToGame(createdGame));
 
         Round currentRound = roundService.createNewRound(0);
         createdGame.setCurrentRoundId(currentRound.getId());
-        createdGame.setAcceptedRoles(gameConfigService.getFreeRolesForGame(gameInfo).toString());
+
+//        actualize gameInfo
+        gameInfo = getGameInfo(createdGame.getId());
+        createdGame.setAcceptedRoles(gameConfigService.getAcceptedRolesForGame(gameConfig).toString());
         createdGame.setFreeRoles(gameConfigService.getFreeRolesForGame(gameInfo).toString());
         gameRepository.save(createdGame);
-        User user = userService.createNewUser(createdGame, creator, gameConfigService.getFreeRolesForGame(gameInfo));
         return createdGame;
     }
 
@@ -129,9 +134,15 @@ public class GameService implements IGameService {
             throw new IllegalArgumentException("Game with id=" + gameId + " not found");
         }
         GameInfo gameInfo = getGameInfo(gameId);
-        User user = userService.createNewUser(game, username, gameConfigService.getFreeRolesForGame(gameInfo));
+        List<Roles> freeRolesForGame = gameConfigService.getFreeRolesForGame(gameInfo);
+        if (freeRolesForGame.isEmpty()) {
+            throw new IllegalStateException("Can`t get free role to this game. Users connected: " + game.getCountConnectedUsers());
+        }
+        User user = userService.createNewUser(game, username, freeRolesForGame);
 
-        game.setAcceptedRoles(gameConfigService.getFreeRolesForGame(gameInfo).toString());
+//        todo: need create update method
+        gameInfo = getGameInfo(gameId);
+        game.setUsersConnectedCount(userService.getCountConnectedUsersToGame(game));
         game.setFreeRoles(gameConfigService.getFreeRolesForGame(gameInfo).toString());
         gameRepository.save(game);
         return game;

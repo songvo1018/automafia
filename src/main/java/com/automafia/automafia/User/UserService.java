@@ -24,7 +24,6 @@ public class UserService {
     }
     public User createNewUser(Game game, String name, List<Roles> freeRolesForGame) {
         User user = new User(game, name);
-//        TODO: IF WE TRY CONNECT LAST USER WE HAVE index out of bound
         user.setRole(roleService.getRandomRoleInGameFor(user, freeRolesForGame));
         user.setAliveStatus(AliveStatus.ALIVE);
         user.setMoveStatus(MoveStatus.READY_MOVE);
@@ -66,5 +65,8 @@ public class UserService {
             Roles roleType) {
         return userRepository.findFirstByGameAndMoveStatusIsAndAliveStatusAndRoleTypeIsNot(game, status, aliveStatus,
                 roleType);
+    }
+    public int getCountConnectedUsersToGame(Game game) {
+        return userRepository.countUserByGame(game);
     }
 }

@@ -22,7 +22,7 @@ public class GameConfigService {
 
     public List<Roles> getAcceptedRolesForGame(GameConfig gameConfig) {
         List<Roles> acceptedRole = new ArrayList<>();
-        for (int i = 0; i <= gameConfig.getUsersCount() + 1; i++) {
+        for (int i = 1; i < gameConfig.getUsersCount() + 1; i++) {
             switch (i) {
                 case 1:
                 case 2:
