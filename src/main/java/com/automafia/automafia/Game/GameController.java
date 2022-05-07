@@ -18,7 +18,7 @@ public class GameController {
 
     /**
      * GET ALL GAMES INFO
-     * @return
+     * @return ResponseEntity<List<Game>> (all not finished games)
      */
     @RequestMapping(value = "all", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -28,7 +28,7 @@ public class GameController {
 
     /**
      * GET GAME INFO by ID
-     * @return
+     * @return ResponseEntity<GameInfo> (game which find by id)
      */
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -38,7 +38,7 @@ public class GameController {
 
     /**
      * GET GAME KEY by id
-     * @return
+     * @return ResponseEntity<Integer> (key of game)
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -48,7 +48,7 @@ public class GameController {
 
     /**
      * CONNECT TO GAME by ID with USERNAME
-     * @return
+     * @return ResponseEntity<Game> (game to which connected user)
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
@@ -58,7 +58,7 @@ public class GameController {
 
     /**
      * CREATE NEW GAME with CREATOR
-     * @return
+     * @return ResponseEntity<Game> (created game)
      */
     @PostMapping
     ResponseEntity<Game> create(
@@ -73,7 +73,7 @@ public class GameController {
 
     /**
      * END GAME by ID
-     * @return
+     * @return ResponseEntity<Game> (ended game)
      */
     @RequestMapping(value="/{id}/game-over", method = RequestMethod.PUT, produces = "application/json")
     @ResponseBody
@@ -83,7 +83,7 @@ public class GameController {
 
     /**
      * NEXT ROUND for GAME by ID
-     * @return
+     * @return ResponseEntity<Game> (updated game)
      */
     @RequestMapping(value="/{id}/next-round", method = RequestMethod.PUT, produces = "application/json")
     @ResponseBody
@@ -93,7 +93,7 @@ public class GameController {
 
     /**
      * NEXT GO for GAME by ID
-     * @return
+     * @return ResponseEntity<User> (next user to go)
      */
     @RequestMapping(value="/{id}/next-go", method = RequestMethod.PUT, produces = "application/json")
     @ResponseBody

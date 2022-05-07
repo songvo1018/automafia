@@ -40,12 +40,18 @@ public class GameConfigService {
                     acceptedRole.add(Roles.DETECTIVE);
                     break;
                 case 6:
-                    if (gameConfig.isDoctorExist())
+                    if (gameConfig.isDoctorExist()) {
                         acceptedRole.add(Roles.DOCTOR);
+                    } else {
+                        acceptedRole.add(Roles.MAFIA);
+                    }
                     break;
                 case 7:
-                    if (gameConfig.isManiacExist())
+                    if (gameConfig.isManiacExist()) {
                         acceptedRole.add(Roles.MANIAC);
+                    } else {
+                        acceptedRole.add(Roles.CITIZEN);
+                    }
                     break;
             }
         }
