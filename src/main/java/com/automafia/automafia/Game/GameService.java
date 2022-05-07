@@ -81,8 +81,7 @@ public class GameService implements IGameService {
         Game game = gameRepository.findById(id);
         List<User> usersInGame = userService.findByGameId(id);
         GameInfo gameInfo = new GameInfo();
-        gameInfo.setGame(game);
-        gameInfo.setUsers(usersInGame);
+        gameInfo.init(game, usersInGame);
         return gameInfo;
     }
 
@@ -105,7 +104,7 @@ public class GameService implements IGameService {
         Game game = gameRepository.findById(gameId);
         Optional<Round> currentRound = roundService.getRoundById(game.getCurrentRoundId());
         if (currentRound.isPresent()) {
-            if (!userService.existUserMovedStatus(game, AliveStatus.ALIVE, MoveStatus.READY_MOVE)) {
+            if (!userService.existUserMovedStatus(game, AliveStatus.ALIVE, MoveStatus.READY_MOVE, Roles.CITIZEN)) {
                 throw new IllegalStateException("All users be moved in this round for game id=" + gameId);
             }
             User userToGo = userService.findFirstByGameAndMoveStatusIsAndAliveStatusAndRoleTypeIsNot(

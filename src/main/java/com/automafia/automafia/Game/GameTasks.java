@@ -15,6 +15,7 @@ public class GameTasks {
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
     private GameService gameService;
 
+//    TODO: create method to check and update round: if users in game = users count from config - game started
     public GameTasks(GameService gameService) {
         this.gameService = gameService;
     }

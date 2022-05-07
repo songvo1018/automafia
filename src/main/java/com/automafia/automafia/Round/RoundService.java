@@ -31,16 +31,6 @@ public class RoundService implements IRoundService {
         return round;
     }
 
-//    public User getNextUserToGo(long roundId) {
-//        Round round = roundRepository.findById(roundId);
-//        List<User> roundList = round.getUserList();
-////        TODO: GET AND REMOVE FROM HEAD USER
-//        User nextUser = roundList.get(roundList.size());
-//        roundList.remove(roundList.size());
-//        Role userRole = nextUser.getRole();
-//        return nextUser;
-//    }
-
     public Round setRoundAsFinished(long id) {
         Optional<Round> round = getRoundById(id);
         round.get().setRoundFinished(true);

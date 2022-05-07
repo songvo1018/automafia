@@ -10,6 +10,12 @@ public class GameInfo {
         return users;
     }
 
+    public GameInfo init(Game game, List<User> users) {
+        setGame(game);
+        setUsers(users);
+        return this;
+    }
+
     public void setUsers(List<User> users) {
         this.users = users;
     }
