@@ -92,12 +92,30 @@ public class GameService implements IGameService {
         Round lastRound = roundService.endLastRound(game.getCurrentRoundId());
         Round newRound = roundService.createNewRound(lastRound.getRoundNumber());
 
-        List<User> alive = userService.setMoveStatusToAliveUsers(game, MoveStatus.READY_MOVE);
+        List<User> alive = userService.setMoveStatusToAliveUsers(game);
 
         game.setCurrentRoundId(newRound.getId());
         game.setRoundNumber(newRound.getRoundNumber());
         gameRepository.save(game);
         return game;
+    }
+
+    public boolean selectTargetUser(long gameId, long userId, long targetId) {
+        Game game = gameRepository.findById(gameId);
+        Optional<Round> currentRound = roundService.getRoundById(game.getCurrentRoundId());
+        if (currentRound.isPresent()) {
+            User user = userService.findById(userId).get();
+            User target = userService.findById(targetId).get();
+            if(user.getMoveStatus() == MoveStatus.MOVED) {
+                return false;
+            }
+            currentRound.get().setTarget(userId, targetId);
+            roundService.save(currentRound.get());
+            return true;
+        } else {
+            throw new IllegalArgumentException("Round by id=" + game.getCurrentRoundId() + " not found");
+        }
+
     }
 
     public User nextUserTurnToGo(long gameId) {
@@ -113,11 +131,8 @@ public class GameService implements IGameService {
                     AliveStatus.ALIVE,
                     Roles.CITIZEN);
 
-//            TODO: NEED STORE TARGET IN ROLE OR USER from user request
-            List<User> pseudorandomUserList = userService.findAliveByGame(game);
-            Collections.shuffle(pseudorandomUserList);
-            userToGo.getRole().effect(pseudorandomUserList.get(0).getId(), userService);
-
+            long targetId = currentRound.get().getUserAndTarget().get(userToGo.getId());
+            userToGo.getRole().effect(targetId, userService);
             userToGo.setMoveStatus(MoveStatus.MOVED);
             userService.save(userToGo);
             return userToGo;
@@ -131,6 +146,8 @@ public class GameService implements IGameService {
         Game game = gameRepository.findById(gameId);
         if (game == null) {
             throw new IllegalArgumentException("Game with id=" + gameId + " not found");
+        } else if (game.isFinished()) {
+            throw new IllegalStateException("Game id=" + gameId + " already finished");
         }
         GameInfo gameInfo = getGameInfo(gameId);
         List<Roles> freeRolesForGame = gameConfigService.getFreeRolesForGame(gameInfo);

@@ -31,10 +31,11 @@ public class Doctor extends Role {
         this.savedUsers = savedUsers;
     }
 
-    public User effect(long userId, UserService userService) {
-        Optional<User> target = userService.findById(userId);
+    public User effect(long targetId, UserService userService) {
+        Optional<User> target = userService.findById(targetId);
         if (target.isPresent() && (target.get().getAliveStatus() == AliveStatus.KILLED_MAFIA || target.get().getAliveStatus() == AliveStatus.KILLED_MAFIA)) {
             target.get().setAliveStatus(AliveStatus.HEALED);
+            userService.save(target.get());
             List<User> updatedSavedUsers = new ArrayList<>();
             updatedSavedUsers.add(target.get());
             setSavedUsers(updatedSavedUsers);

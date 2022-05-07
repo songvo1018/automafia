@@ -43,16 +43,17 @@ public class UserService {
         return userRepository.findAllByGameId(id);
     }
 
-    public List<User> setMoveStatusToAliveUsers(Game game, MoveStatus moveStatus) {
-        List<User> alive = findAliveByGame(game);
+    public List<User> setMoveStatusToAliveUsers(Game game) {
+        List<User> alive = findAliveOrHealedByGame(game);
         for (User user : alive) {
-            user.setMoveStatus(moveStatus);
+            if (user.getAliveStatus() == AliveStatus.HEALED) user.setAliveStatus(AliveStatus.ALIVE);
+            user.setMoveStatus(MoveStatus.READY_MOVE);
             save(user);
         }
         return alive;
     }
-    public List<User> findAliveByGame(Game game) {
-        return userRepository.findByGameAndAliveStatus(game, AliveStatus.ALIVE);
+    public List<User> findAliveOrHealedByGame(Game game) {
+        return userRepository.findByGameAndAliveStatusOrAliveStatus(game, AliveStatus.ALIVE, AliveStatus.HEALED);
     }
 
     public boolean existUserMovedStatus(Game game, AliveStatus aliveStatus, MoveStatus status, Roles roleType) {

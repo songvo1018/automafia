@@ -30,10 +30,11 @@ public class Detective extends Role {
         super(user, roleType);
     }
 
-    public User effect(long userId, UserService userService) {
-        Optional<User> target = userService.findById(userId);
+    public User effect(long targetId, UserService userService) {
+        Optional<User> target = userService.findById(targetId);
         if (target.isPresent() && target.get().getRole().getRoleType() == Roles.MAFIA) {
             target.get().setAliveStatus(AliveStatus.EXPOSED);
+            userService.save(target.get());
             List<User> updatedDetectedUsers = new ArrayList<>();
             updatedDetectedUsers.add(target.get());
             setDetectedUsers(updatedDetectedUsers);

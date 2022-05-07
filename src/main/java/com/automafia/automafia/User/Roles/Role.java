@@ -59,8 +59,8 @@ public class Role {
         return id;
     }
     
-    public User effect(long userId, UserService userService) {
-        Optional<User> user = userService.findById(userId);
+    public User effect(long targetId, UserService userService) {
+        Optional<User> user = userService.findById(targetId);
         return user.orElse(null);
     }
 }

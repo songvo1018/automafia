@@ -10,7 +10,7 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 
     List<User> findAllByGameId(long id);
 
-    List<User> findByGameAndAliveStatus(Game game, AliveStatus aliveStatus);
+    List<User> findByGameAndAliveStatusOrAliveStatus(Game game, AliveStatus aliveStatus, AliveStatus secondAliveStatus);
     User findFirstByGameAndMoveStatusIsAndAliveStatusAndRoleTypeIsNot(
             Game game,
             MoveStatus status,

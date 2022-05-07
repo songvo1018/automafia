@@ -42,6 +42,8 @@ public class Game {
     @JoinColumn(name = "game_config", nullable = false)
     private GameConfig gameConfig;
 
+//    TODO: THINK ABOUT STORE USERS STATUS IN DB
+
     /**
      * Value to view accepted roles
      */

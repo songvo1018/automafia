@@ -14,7 +14,7 @@ public class Citizen extends Role {
 
     public Citizen() {}
 
-    public User effect(long userId, UserService userService) {
-        return super.effect(userId, userService);
+    public User effect(long targetId, UserService userService) {
+        return super.effect(targetId, userService);
     }
 }

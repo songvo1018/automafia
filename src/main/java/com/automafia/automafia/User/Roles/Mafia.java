@@ -17,10 +17,13 @@ public class Mafia extends Role {
 
     public Mafia() {}
 
-    public User effect(long userId, UserService userService) {
-        Optional<User> target = userService.findById(userId);
+    public User effect(long targetId, UserService userService) {
+        Optional<User> target = userService.findById(targetId);
 //        TODO: THINK ABOUT Unanimously mafioso
-        target.ifPresent(user -> user.setAliveStatus(AliveStatus.KILLED_MAFIA));
+        if (target.isPresent()) {
+            target.get().setAliveStatus(AliveStatus.KILLED_MAFIA);
+            userService.save(target.get());
+        }
         return target.orElse(null);
     }
 }

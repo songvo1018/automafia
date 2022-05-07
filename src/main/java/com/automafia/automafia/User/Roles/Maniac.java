@@ -30,11 +30,12 @@ public class Maniac extends Role {
         this.preyUser = preyUser;
     }
 
-    public User effect(long userId, UserService userService) {
+    public User effect(long targetId, UserService userService) {
         
-        Optional<User> target = userService.findById(userId);
+        Optional<User> target = userService.findById(targetId);
         if (target.isPresent() && getPreyUser() == null) {
             target.get().setAliveStatus(AliveStatus.KILLED_MANIAC);
+            userService.save(target.get());
             this.setPreyUser(target.get());
         }
         return target.orElse(null);

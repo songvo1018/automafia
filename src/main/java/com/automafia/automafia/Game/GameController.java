@@ -100,4 +100,15 @@ public class GameController {
     ResponseEntity<User> nextGo(@PathVariable long id) {
         return ResponseEntity.ok().body(gameService.nextUserTurnToGo(id));
     }
+
+    /**
+     * SELECT TARGET for TURN by USER_ID in GAME by ID
+     * @return boolean successfully selection
+     */
+    @RequestMapping(value = "/{gameId}/target", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    ResponseEntity<Boolean> selectTarget(@PathVariable long gameId, @RequestParam long userId,
+                                         @RequestParam long targetId) {
+        return ResponseEntity.ok().body(gameService.selectTargetUser(gameId, userId, targetId));
+    }
 }
