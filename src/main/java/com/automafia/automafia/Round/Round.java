@@ -24,6 +24,8 @@ public class Round {
      */
     private int roundNumber;
 
+//    TODO: MAYBE WE NEED STATE OF DAY like isNight for optimize scheduled task
+
     /**
      * State of round
      */
