@@ -11,8 +11,8 @@ import com.automafia.automafia.User.User;
 import com.automafia.automafia.User.UserService;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -49,19 +49,22 @@ public class GameService implements IGameService {
         gameConfigService.save(gameConfig);
 
         Game createdGame = new Game(creator, gameConfig);
+        Round currentRound = roundService.createNewRound(0);
+        createdGame.setCurrentRoundId(currentRound.getId());
+
         gameRepository.save(createdGame);
         GameInfo gameInfo = getGameInfo(createdGame.getId());
         User user = userService.createNewUser(createdGame, creator,
                 gameConfigService.getFreeRolesForGame(gameInfo));
         createdGame.setUsersConnectedCount(userService.getCountConnectedUsersToGame(createdGame));
 
-        Round currentRound = roundService.createNewRound(0);
-        createdGame.setCurrentRoundId(currentRound.getId());
+
 
 //        actualize gameInfo
         gameInfo = getGameInfo(createdGame.getId());
         createdGame.setAcceptedRoles(gameConfigService.getAcceptedRolesForGame(gameConfig).toString());
         createdGame.setFreeRoles(gameConfigService.getFreeRolesForGame(gameInfo).toString());
+        createdGame.setCountNightUsers(gameConfigService.getCountNightUsers(gameConfig));
         gameRepository.save(createdGame);
         return createdGame;
     }
@@ -79,9 +82,10 @@ public class GameService implements IGameService {
     @Override
     public GameInfo getGameInfo(long id) {
         Game game = gameRepository.findById(id);
+        Optional<Round> currentRound = roundService.getRoundById(game.getCurrentRoundId());
         List<User> usersInGame = userService.findByGameId(id);
         GameInfo gameInfo = new GameInfo();
-        gameInfo.init(game, usersInGame);
+        gameInfo.init(game, usersInGame, currentRound.get());
         return gameInfo;
     }
 
@@ -93,6 +97,13 @@ public class GameService implements IGameService {
         Round newRound = roundService.createNewRound(lastRound.getRoundNumber());
 
         List<User> alive = userService.setMoveStatusToAliveUsers(game);
+        List<User> deadUsers = userService.getDeadUsers(game);
+        for (User user : deadUsers) {
+            user.setMoveStatus(MoveStatus.CANT_MOVE);
+        }
+
+        game.setCountNightUsers(userService.findAliveNightUsers(game));
+        game.setFinished(userService.isMafiaWon(game));
 
         game.setCurrentRoundId(newRound.getId());
         game.setRoundNumber(newRound.getRoundNumber());
@@ -118,7 +129,7 @@ public class GameService implements IGameService {
 
     }
 
-    public User nextUserTurnToGo(long gameId) {
+    public User nextUserTurnToGo(long gameId) throws IllegalStateException, IllegalArgumentException {
         Game game = gameRepository.findById(gameId);
         Optional<Round> currentRound = roundService.getRoundById(game.getCurrentRoundId());
         if (currentRound.isPresent()) {
@@ -131,7 +142,13 @@ public class GameService implements IGameService {
                     AliveStatus.ALIVE,
                     Roles.CITIZEN);
 
-            long targetId = currentRound.get().getUserAndTarget().get(userToGo.getId());
+            Map<Long, Long> usersAndTargets = currentRound.get().getUserAndTarget();
+            if (usersAndTargets == null || usersAndTargets.isEmpty() || !usersAndTargets.containsKey(userToGo.getId())) {
+                return userToGo;
+            }
+            long targetId = usersAndTargets.get(userToGo.getId());
+
+//            TODO: CHECK MANIAC BEFORE EFFECT
             userToGo.getRole().effect(targetId, userService);
             userToGo.setMoveStatus(MoveStatus.MOVED);
             userService.save(userToGo);

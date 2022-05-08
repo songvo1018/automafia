@@ -72,4 +72,14 @@ public class GameConfigService {
         }
         return notUsedRoles;
     }
+
+    public int getCountNightUsers(GameConfig gameConfig) {
+        List<Roles> acceptedRole = getAcceptedRolesForGame(gameConfig);
+        int count = 0;
+        for (Roles role : acceptedRole) {
+            if (role.equals(Roles.CITIZEN)) continue;
+            count++;
+        }
+        return count;
+    }
 }

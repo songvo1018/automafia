@@ -59,6 +59,11 @@ public class Game {
      */
     private int countConnectedUsers;
 
+    /**
+     * Count of users with effect
+     */
+    private int countNightUsers;
+
     protected Game() {};
 
     public Game(String creatorName, GameConfig gameConfig) {
@@ -103,13 +108,13 @@ public class Game {
     public void setRoundNumber(int roundNumber) {
         this.roundNumber = roundNumber;
     }
+
     public void setCurrentRoundId(long currentRoundId) {
         this.currentRoundId = currentRoundId;
     }
     public int getGameKey() {
         return gameKey;
     }
-
     public void setFinished(boolean status) {
         this.finished = status;
     }
@@ -140,6 +145,14 @@ public class Game {
 
     public void setUsersConnectedCount(int countConnectedUsersToGame) {
         this.countConnectedUsers = countConnectedUsersToGame;
+    }
+
+    public int getCountNightUsers() {
+        return countNightUsers;
+    }
+
+    public void setCountNightUsers(int countNightUsers) {
+        this.countNightUsers = countNightUsers;
     }
 }
 

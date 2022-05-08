@@ -1,6 +1,7 @@
 package com.automafia.automafia.User;
 
 import com.automafia.automafia.Game.Game;
+import com.automafia.automafia.User.Roles.Role;
 import com.automafia.automafia.User.Roles.RoleService;
 import com.automafia.automafia.User.Roles.Roles;
 import org.springframework.stereotype.Service;
@@ -70,5 +71,22 @@ public class UserService {
     }
     public int getCountConnectedUsersToGame(Game game) {
         return userRepository.countUserByGame(game);
+    }
+
+    public boolean isMafiaWon(Game game) {
+        List<User> aliveCitizen = userRepository.findByGameAndAliveStatusAndRoleTypeNot(game, AliveStatus.ALIVE,
+                Roles.MAFIA);
+        List<User> aliveMafia = userRepository.findByGameAndAliveStatusAndRoleType(game, AliveStatus.ALIVE,
+                Roles.MAFIA);
+// TODO: (!) MOVE TO CONFIG MINIMAL COUNT NOT MAFIA USERS
+        return !aliveMafia.isEmpty() && (aliveCitizen.size() < 2 || aliveCitizen.isEmpty());
+    }
+
+    public List<User> getDeadUsers(Game game) {
+        return userRepository.findByGameAndAliveStatusNot(game, AliveStatus.ALIVE);
+    }
+
+    public int findAliveNightUsers(Game game) {
+        return userRepository.findByGameAndAliveStatusAndRoleTypeNot(game, AliveStatus.ALIVE, Roles.CITIZEN).size();
     }
 }

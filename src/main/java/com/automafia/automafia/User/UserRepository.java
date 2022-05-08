@@ -20,4 +20,10 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long> {
                                                                      MoveStatus status, Roles roleType);
 
     int countUserByGame(Game game);
+
+    List<User> findByGameAndAliveStatusAndRoleTypeNot(Game game, AliveStatus aliveStatus, Roles role);
+
+    List<User> findByGameAndAliveStatusAndRoleType(Game game, AliveStatus aliveStatus, Roles role);
+
+    List<User> findByGameAndAliveStatusNot(Game game, AliveStatus aliveStatus);
 }
