@@ -1,6 +1,7 @@
 package com.automafia.automafia.Game;
 
 import com.automafia.automafia.User.User;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,7 +53,12 @@ public class GameController {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    ResponseEntity<Game> connectTo(@PathVariable long id, @RequestParam("username") String username) {
+    ResponseEntity<Game> connectTo(
+            @PathVariable long id,
+            @RequestParam("username") String username) {
+        if (null == username || "".equals(username) || "" == username) {
+            throw new IllegalArgumentException("{\"error\":\"At least one parameter is invalid or not supplied\"}");
+        }
         return ResponseEntity.ok().body(gameService.connectTo(id, username));
     }
 
@@ -107,8 +113,22 @@ public class GameController {
      */
     @RequestMapping(value = "/{gameId}/target", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    ResponseEntity<Boolean> selectTarget(@PathVariable long gameId, @RequestParam long userId,
-                                         @RequestParam long targetId) {
+    ResponseEntity<Boolean> selectTarget(
+            @PathVariable long gameId,
+            @RequestParam long userId,
+            @RequestParam long targetId) {
         return ResponseEntity.ok().body(gameService.selectTargetUser(gameId, userId, targetId));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public final String exceptionHandlerIllegalArgumentException(final IllegalArgumentException e) {
+        return '"' + e.getMessage() + '"';
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public final String exceptionHandlerIllegalStateException(final IllegalStateException e) {
+        return '"' + e.getMessage() + '"';
     }
 }
