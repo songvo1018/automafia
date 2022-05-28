@@ -24,4 +24,17 @@
   - Добавить возможность выбора минимального количества игроков для победы Мафии
 - Рефакторинг:
   - GameTasks.nextRound()
-  - 
+
+
+<!-- START -->
+## Start application
+
+Clone repo
+```
+git clone https://github.com/songvo1018/automafia.git
+```
+
+Create database, user and set in `src/main/resources/application.properties`:
+- user
+- password
+- url
