@@ -10,20 +10,20 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 
     List<User> findAllByGameId(long id);
 
-    List<User> findByGameAndAliveStatusOrAliveStatus(Game game, AliveStatus aliveStatus, AliveStatus secondAliveStatus);
-    User findFirstByGameAndMoveStatusIsAndAliveStatusAndRoleTypeIsNot(
-            Game game,
+    List<User> findByGameIdAndAliveStatusOrAliveStatus(long gameId, AliveStatus aliveStatus, AliveStatus secondAliveStatus);
+    User findFirstByGameIdAndMoveStatusIsAndAliveStatusAndRoleTypeIsNot(
+            long gameId,
             MoveStatus status,
             AliveStatus aliveStatus,
             Roles roleType);
-    boolean existsUserByGameAndAliveStatusAndMoveStatusAndRoleTypeNot(Game game, AliveStatus aliveStatus,
-                                                                     MoveStatus status, Roles roleType);
+    boolean existsUserByGameIdAndAliveStatusAndMoveStatusAndRoleTypeNot(long gameId, AliveStatus aliveStatus,
+                                                                        MoveStatus status, Roles roleType);
 
-    int countUserByGame(Game game);
+    int countUserByGameId(long gameId);
 
-    List<User> findByGameAndAliveStatusAndRoleTypeNot(Game game, AliveStatus aliveStatus, Roles role);
+    List<User> findByGameIdAndAliveStatusAndRoleTypeNot(long gameId, AliveStatus aliveStatus, Roles role);
 
-    List<User> findByGameAndAliveStatusAndRoleType(Game game, AliveStatus aliveStatus, Roles role);
+    List<User> findByGameIdAndAliveStatusAndRoleType(long gameId, AliveStatus aliveStatus, Roles role);
 
-    List<User> findByGameAndAliveStatusNot(Game game, AliveStatus aliveStatus);
+    List<User> findByGameIdAndAliveStatusNot(long gameId, AliveStatus aliveStatus);
 }

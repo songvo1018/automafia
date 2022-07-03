@@ -26,9 +26,10 @@ public class User {
     /**
      * The game the user has joined
      */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private Game game;
+//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JsonManagedReference
+//    private Game game;
+    private long gameId;
 
     /**
      * Role type
@@ -55,13 +56,13 @@ public class User {
 
     protected User() {}
 
-    public User(Game game, String name) {
-        this.game = game;
+    public User(long gameId, String name) {
+        this.gameId = gameId;
         this.name = name;
     }
 
-    public Game getGame() {
-        return game;
+    public long getGameId() {
+        return gameId;
     }
 
     public long getId() {
@@ -72,8 +73,8 @@ public class User {
         return roleType;
     }
 
-    public void setGame(Game game) {
-        this.game = game;
+    public void setGame(long gameId) {
+        this.gameId = gameId;
     }
 
     public String getName() {

@@ -1,7 +1,6 @@
 package com.automafia.automafia.User;
 
 import com.automafia.automafia.Game.Game;
-import com.automafia.automafia.User.Roles.Role;
 import com.automafia.automafia.User.Roles.RoleService;
 import com.automafia.automafia.User.Roles.Roles;
 import org.springframework.stereotype.Service;
@@ -23,8 +22,8 @@ public class UserService {
         userRepository.save(user);
         return user;
     }
-    public User createNewUser(Game game, String name, List<Roles> freeRolesForGame) {
-        User user = new User(game, name);
+    public User createNewUser(long gameId, String name, List<Roles> freeRolesForGame) {
+        User user = new User(gameId, name);
         user.setRole(roleService.getRandomRoleInGameFor(user, freeRolesForGame));
         user.setAliveStatus(AliveStatus.ALIVE);
         user.setMoveStatus(MoveStatus.READY_MOVE);
@@ -54,11 +53,12 @@ public class UserService {
         return alive;
     }
     public List<User> findAliveOrHealedByGame(Game game) {
-        return userRepository.findByGameAndAliveStatusOrAliveStatus(game, AliveStatus.ALIVE, AliveStatus.HEALED);
+        return userRepository.findByGameIdAndAliveStatusOrAliveStatus(game.getId(), AliveStatus.ALIVE,
+                AliveStatus.HEALED);
     }
 
     public boolean existUserMovedStatus(Game game, AliveStatus aliveStatus, MoveStatus status, Roles roleType) {
-        return userRepository.existsUserByGameAndAliveStatusAndMoveStatusAndRoleTypeNot(game, aliveStatus, status,
+        return userRepository.existsUserByGameIdAndAliveStatusAndMoveStatusAndRoleTypeNot(game.getId(), aliveStatus, status,
                 roleType);
     }
     public User findFirstByGameAndMoveStatusIsAndAliveStatusAndRoleTypeIsNot(
@@ -66,27 +66,27 @@ public class UserService {
             MoveStatus status,
             AliveStatus aliveStatus,
             Roles roleType) {
-        return userRepository.findFirstByGameAndMoveStatusIsAndAliveStatusAndRoleTypeIsNot(game, status, aliveStatus,
+        return userRepository.findFirstByGameIdAndMoveStatusIsAndAliveStatusAndRoleTypeIsNot(game.getId(), status, aliveStatus,
                 roleType);
     }
-    public int getCountConnectedUsersToGame(Game game) {
-        return userRepository.countUserByGame(game);
+    public int getCountConnectedUsersToGame(long gameId) {
+        return userRepository.countUserByGameId(gameId);
     }
 
     public boolean isMafiaWon(Game game) {
-        List<User> aliveCitizen = userRepository.findByGameAndAliveStatusAndRoleTypeNot(game, AliveStatus.ALIVE,
+        List<User> aliveCitizen = userRepository.findByGameIdAndAliveStatusAndRoleTypeNot(game.getId(), AliveStatus.ALIVE,
                 Roles.MAFIA);
-        List<User> aliveMafia = userRepository.findByGameAndAliveStatusAndRoleType(game, AliveStatus.ALIVE,
+        List<User> aliveMafia = userRepository.findByGameIdAndAliveStatusAndRoleType(game.getId(), AliveStatus.ALIVE,
                 Roles.MAFIA);
 // TODO: (!) MOVE TO CONFIG MINIMAL COUNT NOT MAFIA USERS
         return !aliveMafia.isEmpty() && (aliveCitizen.size() < 2 || aliveCitizen.isEmpty());
     }
 
     public List<User> getDeadUsers(Game game) {
-        return userRepository.findByGameAndAliveStatusNot(game, AliveStatus.ALIVE);
+        return userRepository.findByGameIdAndAliveStatusNot(game.getId(), AliveStatus.ALIVE);
     }
 
     public int findAliveNightUsers(Game game) {
-        return userRepository.findByGameAndAliveStatusAndRoleTypeNot(game, AliveStatus.ALIVE, Roles.CITIZEN).size();
+        return userRepository.findByGameIdAndAliveStatusAndRoleTypeNot(game.getId(), AliveStatus.ALIVE, Roles.CITIZEN).size();
     }
 }

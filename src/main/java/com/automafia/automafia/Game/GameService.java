@@ -54,9 +54,9 @@ public class GameService implements IGameService {
 
         gameRepository.save(createdGame);
         GameInfo gameInfo = getGameInfo(createdGame.getId());
-        User user = userService.createNewUser(createdGame, creator,
+        User user = userService.createNewUser(createdGame.getId(), creator,
                 gameConfigService.getFreeRolesForGame(gameInfo));
-        createdGame.setUsersConnectedCount(userService.getCountConnectedUsersToGame(createdGame));
+        createdGame.setUsersConnectedCount(userService.getCountConnectedUsersToGame(createdGame.getId()));
 
 
 
@@ -171,11 +171,11 @@ public class GameService implements IGameService {
         if (freeRolesForGame.isEmpty()) {
             throw new IllegalStateException("Can`t get free role to this game. Users connected: " + game.getCountConnectedUsers());
         }
-        User user = userService.createNewUser(game, username, freeRolesForGame);
+        User user = userService.createNewUser(game.getId(), username, freeRolesForGame);
 
 //        todo: need create update method
         gameInfo = getGameInfo(gameId);
-        game.setUsersConnectedCount(userService.getCountConnectedUsersToGame(game));
+        game.setUsersConnectedCount(userService.getCountConnectedUsersToGame(game.getId()));
         game.setFreeRoles(gameConfigService.getFreeRolesForGame(gameInfo).toString());
         gameRepository.save(game);
         return game;

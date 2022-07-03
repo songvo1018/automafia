@@ -80,8 +80,9 @@ public class GameTasks {
 
             if (usersMovedByGame.get(gameId) == null) continue;
             log.info("Users moved now: " + usersMovedByGame.get(gameId).size()+  ". Round ID: " + gameInfo.getCurrentRound().getId());
+            log.info("Night users %s", gameInfo.getGame().getCountNightUsers());
             log.info("Users move: " + usersMovedByGame.get(gameId));
-            if (usersMovedByGame.get(gameId).size() == gameInfo.getGame().getCountNightUsers()) {
+            if (usersMovedByGame.get(gameId).size() >= gameInfo.getGame().getCountNightUsers()) {
                 Game gameWithNewRound = gameService.nextRound(gameId);
                 usersMovedByGame.clear();
                 log.info(" | ! | New round: " + gameWithNewRound.getRoundNumber());
