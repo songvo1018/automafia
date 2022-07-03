@@ -65,8 +65,8 @@ public class GameTasks {
 
         for (long gameId : getCachedGames()) {
             log.info("");
-            log.info("           try NEXT ROUND");
             GameInfo gameInfo = gameService.getGameInfo(gameId);
+            log.info("           EVENT: CHECK NEXT ROUND");
             log.info("GameID: " + gameId + ". Round: " + gameInfo.getCurrentRound().getRoundNumber());
             List<User> users = gameInfo.getUsers();
             List<Long> usersMovedId = new ArrayList<>();
@@ -78,14 +78,15 @@ public class GameTasks {
                 usersMovedByGame.put(gameId, usersMovedId);
             }
 
-            if (usersMovedByGame.get(gameId) == null) continue;
-            log.info("Users moved now: " + usersMovedByGame.get(gameId).size()+  ". Round ID: " + gameInfo.getCurrentRound().getId());
-            log.info("Users move: " + usersMovedByGame.get(gameId));
+            if (usersMovedByGame.get(gameId) == null) {
+                log.info("Nobody not select target", String.valueOf(movedUsersIds.size()));
+                continue;
+            }
             if (usersMovedByGame.get(gameId).size() == gameInfo.getGame().getCountNightUsers()) {
                 Game gameWithNewRound = gameService.nextRound(gameId);
                 usersMovedByGame.clear();
+                log.info("All users selected target.");
                 log.info(" | ! | New round: " + gameWithNewRound.getRoundNumber());
-//                TODO: REPLACE TO METHOD
                 if (gameWithNewRound.isFinished()) {
                     log.info(">>>>>>>> GAME OVER creator:" + gameWithNewRound.getCreatorName());
                     log.info("round:" + gameWithNewRound.getRoundNumber() + ", users:" + users);
