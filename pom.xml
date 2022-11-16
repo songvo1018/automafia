@@ -12,7 +12,7 @@
 	<artifactId>automafia</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>automafia</name>
-	<description>Mafia without gamemaster</description>
+	<description>Mafia without game master</description>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
@@ -22,6 +22,11 @@
 			<artifactId>awaitility</artifactId>
 			<version>3.1.2</version>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-actuator</artifactId>
 		</dependency>
 
 		<dependency>

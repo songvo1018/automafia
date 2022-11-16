@@ -1,0 +1,283 @@
+{
+	"info": {
+		"_postman_id": "daf3e5dc-1310-4fd2-958b-ada5d7c48895",
+		"name": "automafia",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24462391"
+	},
+	"item": [
+		{
+			"name": "get all games",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:9292/games/all",
+					"host": [
+						"localhost"
+					],
+					"port": "9292",
+					"path": [
+						"games",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get game by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:9292/games?id=1",
+					"host": [
+						"localhost"
+					],
+					"port": "9292",
+					"path": [
+						"games"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get game key by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:9292/games/1",
+					"host": [
+						"localhost"
+					],
+					"port": "9292",
+					"path": [
+						"games",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "connect to game  by id",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "sasa",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:9292/games/6",
+					"host": [
+						"localhost"
+					],
+					"port": "9292",
+					"path": [
+						"games",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create new game",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "creator",
+							"value": "alex",
+							"type": "text"
+						},
+						{
+							"key": "usersCount",
+							"value": "8",
+							"type": "text"
+						},
+						{
+							"key": "isManiacExist",
+							"value": "true",
+							"type": "text"
+						},
+						{
+							"key": "isDoctorExist",
+							"value": "true",
+							"type": "text"
+						},
+						{
+							"key": "isMafiaUnanimousDecision",
+							"value": "true",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:9292/games",
+					"host": [
+						"localhost"
+					],
+					"port": "9292",
+					"path": [
+						"games"
+					],
+					"query": [
+						{
+							"key": "creator",
+							"value": "alex",
+							"disabled": true
+						},
+						{
+							"key": "userCount",
+							"value": "8",
+							"disabled": true
+						},
+						{
+							"key": "isManiacExist",
+							"value": "true",
+							"disabled": true
+						},
+						{
+							"key": "isDoctorExist",
+							"value": "true",
+							"disabled": true
+						},
+						{
+							"key": "isMafiaUnanimousDecision",
+							"value": "true",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "over game by id",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "localhost:9292/games/3/game-over",
+					"host": [
+						"localhost"
+					],
+					"port": "9292",
+					"path": [
+						"games",
+						"3",
+						"game-over"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "next round for game by id",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "localhost:9292/games/3/next-round",
+					"host": [
+						"localhost"
+					],
+					"port": "9292",
+					"path": [
+						"games",
+						"3",
+						"next-round"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "next go for game by id",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "localhost:9292/games/3/next-go",
+					"host": [
+						"localhost"
+					],
+					"port": "9292",
+					"path": [
+						"games",
+						"3",
+						"next-go"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "next go for game by id Copy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "userId",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "targetId",
+							"value": "2",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:9292/games/3/target",
+					"host": [
+						"localhost"
+					],
+					"port": "9292",
+					"path": [
+						"games",
+						"3",
+						"target"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
