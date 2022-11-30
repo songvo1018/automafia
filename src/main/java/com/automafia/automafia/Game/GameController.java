@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/games")
+@RequestMapping("/api")
 public class GameController {
     private final GameService gameService;
 
@@ -21,7 +21,7 @@ public class GameController {
      * GET ALL GAMES INFO
      * @return ResponseEntity<List<Game>> (all not finished games)
      */
-    @RequestMapping(value = "all", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/games", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     ResponseEntity<List<Game>> game() {
         return ResponseEntity.ok().body(gameService.getGamesInfo());
@@ -31,35 +31,36 @@ public class GameController {
      * GET GAME INFO by ID
      * @return ResponseEntity<GameInfo> (game which find by id)
      */
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
+
+    @RequestMapping(value = "/find/{gameId}",method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    ResponseEntity<GameInfo> gameInfo(@RequestParam("id") long id) {
-        return ResponseEntity.ok().body(gameService.getGameInfo(id));
+    ResponseEntity<GameInfo> gameInfo(@PathVariable long gameId) {
+        return ResponseEntity.ok().body(gameService.getGameInfo(gameId));
     }
 
     /**
-     * GET GAME KEY by id
+     * FIND GAME KEY by id
      * @return ResponseEntity<Integer> (key of game)
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/key/{gameId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    ResponseEntity<Integer> gameById(@PathVariable long id) {
-        return ResponseEntity.ok().body(gameService.getGameKey(id));
+    ResponseEntity<Integer> gameById(@PathVariable long gameId) {
+        return ResponseEntity.ok().body(gameService.getGameKey(gameId));
     }
 
     /**
      * CONNECT TO GAME by ID with USERNAME
      * @return ResponseEntity<Game> (game to which connected user)
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/connect/{gameId}", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     ResponseEntity<Game> connectTo(
-            @PathVariable long id,
+            @PathVariable long gameId,
             @RequestParam("username") String username) {
         if (null == username || "".equals(username) || "" == username) {
             throw new IllegalArgumentException("{\"error\":\"At least one parameter is invalid or not supplied\"}");
         }
-        return ResponseEntity.ok().body(gameService.connectTo(id, username));
+        return ResponseEntity.ok().body(gameService.connectTo(gameId, username));
     }
 
     /**
@@ -67,6 +68,7 @@ public class GameController {
      * @return ResponseEntity<Game> (created game)
      */
     @PostMapping
+    @RequestMapping(value = "/create", method = RequestMethod.POST, produces = "application/json")
     ResponseEntity<Game> create(
             @RequestParam("creator") String creatorName,
             @RequestParam("usersCount") int usersCount,
@@ -81,37 +83,37 @@ public class GameController {
      * END GAME by ID
      * @return ResponseEntity<Game> (ended game)
      */
-    @RequestMapping(value="/{id}/game-over", method = RequestMethod.PUT, produces = "application/json")
+    @RequestMapping(value="/end-game/{gameId}", method = RequestMethod.PUT, produces = "application/json")
     @ResponseBody
-    ResponseEntity<Game> endGame(@PathVariable("id") long id) {
-        return ResponseEntity.ok().body(gameService.endGame(id));
+    ResponseEntity<Game> endGame(@PathVariable long gameId) {
+        return ResponseEntity.ok().body(gameService.endGame(gameId));
     }
 
     /**
      * NEXT ROUND for GAME by ID
      * @return ResponseEntity<Game> (updated game)
      */
-    @RequestMapping(value="/{id}/next-round", method = RequestMethod.PUT, produces = "application/json")
+    @RequestMapping(value="/next-round/{gameId}", method = RequestMethod.PUT, produces = "application/json")
     @ResponseBody
-    ResponseEntity<Game> nextRound(@PathVariable long id) {
-        return ResponseEntity.ok().body(gameService.nextRound(id));
+    ResponseEntity<Game> nextRound(@PathVariable long gameId) {
+        return ResponseEntity.ok().body(gameService.nextRound(gameId));
     }
 
     /**
      * NEXT GO for GAME by ID
      * @return ResponseEntity<User> (next user to go)
      */
-    @RequestMapping(value="/{id}/next-go", method = RequestMethod.PUT, produces = "application/json")
+    @RequestMapping(value="/next-go/{gameId}", method = RequestMethod.PUT, produces = "application/json")
     @ResponseBody
-    ResponseEntity<User> nextGo(@PathVariable long id) {
-        return ResponseEntity.ok().body(gameService.nextUserTurnToGo(id));
+    ResponseEntity<User> nextGo(@PathVariable long gameId) {
+        return ResponseEntity.ok().body(gameService.nextUserTurnToGo(gameId));
     }
 
     /**
      * SELECT TARGET for TURN by USER_ID in GAME by ID
      * @return boolean successfully selection
      */
-    @RequestMapping(value = "/{gameId}/target", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/target/{gameId}", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     ResponseEntity<Boolean> selectTarget(
             @PathVariable long gameId,

@@ -12,14 +12,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:9292/games/all",
+					"raw": "localhost:9292/api/games",
 					"host": [
 						"localhost"
 					],
 					"port": "9292",
 					"path": [
-						"games",
-						"all"
+						"api",
+						"games"
 					]
 				}
 			},
@@ -31,19 +31,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:9292/games?id=1",
+					"raw": "localhost:9292/api/find/1",
 					"host": [
 						"localhost"
 					],
 					"port": "9292",
 					"path": [
-						"games"
-					],
-					"query": [
-						{
-							"key": "id",
-							"value": "1"
-						}
+						"api",
+						"find",
+						"1"
 					]
 				}
 			},
@@ -55,13 +51,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:9292/games/1",
+					"raw": "localhost:9292/api/key/1",
 					"host": [
 						"localhost"
 					],
 					"port": "9292",
 					"path": [
-						"games",
+						"api",
+						"key",
 						"1"
 					]
 				}
@@ -84,14 +81,15 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:9292/games/6",
+					"raw": "localhost:9292/api/connect/1",
 					"host": [
 						"localhost"
 					],
 					"port": "9292",
 					"path": [
-						"games",
-						"6"
+						"api",
+						"connect",
+						"1"
 					]
 				}
 			},
@@ -133,13 +131,14 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:9292/games",
+					"raw": "localhost:9292/api/create",
 					"host": [
 						"localhost"
 					],
 					"port": "9292",
 					"path": [
-						"games"
+						"api",
+						"create"
 					],
 					"query": [
 						{
@@ -173,7 +172,7 @@
 			"response": []
 		},
 		{
-			"name": "over game by id",
+			"name": "end game by id",
 			"request": {
 				"method": "PUT",
 				"header": [],
@@ -182,15 +181,15 @@
 					"urlencoded": []
 				},
 				"url": {
-					"raw": "localhost:9292/games/3/game-over",
+					"raw": "localhost:9292/api/end-game/1",
 					"host": [
 						"localhost"
 					],
 					"port": "9292",
 					"path": [
-						"games",
-						"3",
-						"game-over"
+						"api",
+						"end-game",
+						"1"
 					]
 				}
 			},
@@ -206,15 +205,15 @@
 					"urlencoded": []
 				},
 				"url": {
-					"raw": "localhost:9292/games/3/next-round",
+					"raw": "localhost:9292/api/next-round/2",
 					"host": [
 						"localhost"
 					],
 					"port": "9292",
 					"path": [
-						"games",
-						"3",
-						"next-round"
+						"api",
+						"next-round",
+						"2"
 					]
 				}
 			},
@@ -230,22 +229,22 @@
 					"urlencoded": []
 				},
 				"url": {
-					"raw": "localhost:9292/games/3/next-go",
+					"raw": "localhost:9292/api/next-go/2",
 					"host": [
 						"localhost"
 					],
 					"port": "9292",
 					"path": [
-						"games",
-						"3",
-						"next-go"
+						"api",
+						"next-go",
+						"2"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "next go for game by id Copy",
+			"name": "target by game id",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -265,15 +264,15 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:9292/games/3/target",
+					"raw": "localhost:9292/api/target/2",
 					"host": [
 						"localhost"
 					],
 					"port": "9292",
 					"path": [
-						"games",
-						"3",
-						"target"
+						"api",
+						"target",
+						"2"
 					]
 				}
 			},
