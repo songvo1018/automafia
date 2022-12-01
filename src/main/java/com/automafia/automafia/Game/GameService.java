@@ -180,4 +180,13 @@ public class GameService implements IGameService {
         gameRepository.save(game);
         return game;
     }
+
+    public boolean isGameConfigsIsEmpty() {
+        return gameConfigService.isGameConfigsEmpty();
+    }
+    public void createGameConfig(boolean isDoctorExist, boolean isManiacExist, int usersCount) {
+        GameConfig gameConfig = new GameConfig();
+        gameConfig.init(isDoctorExist, isManiacExist, true, usersCount);
+        gameConfigService.save(gameConfig);
+    }
 }

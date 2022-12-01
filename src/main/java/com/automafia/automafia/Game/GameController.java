@@ -18,6 +18,24 @@ public class GameController {
     }
 
     /**
+     * HEALTH
+     * @return String
+     */
+    @RequestMapping(value = "/default-configs", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    ResponseEntity<String> initializeConfigs() {
+        if (gameService.isGameConfigsIsEmpty()) {
+            gameService.createGameConfig(true, true, 8);
+            gameService.createGameConfig(false, false, 8);
+            gameService.createGameConfig(true, true, 6);
+            gameService.createGameConfig(false, false, 6);
+            return ResponseEntity.ok().body("INITIALIZED");
+        } else {
+            return ResponseEntity.ok().body("ALREADY INITIALIZED");
+        }
+    }
+
+    /**
      * GET ALL GAMES INFO
      * @return ResponseEntity<List<Game>> (all not finished games)
      */
@@ -25,6 +43,16 @@ public class GameController {
     @ResponseBody
     ResponseEntity<List<Game>> game() {
         return ResponseEntity.ok().body(gameService.getGamesInfo());
+    }
+
+    /**
+     * HEALTH
+     * @return String
+     */
+    @RequestMapping(value = "/health", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    ResponseEntity<String> health() {
+        return ResponseEntity.ok().body("ALIVE");
     }
 
     /**

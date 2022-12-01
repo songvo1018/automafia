@@ -14,7 +14,9 @@ services:
     expose:
       - '3306'
     volumes:
+      - ./default_game_configs.sql:/docker-entrypoint-initdb.d/1.sql
       - mafia:/var/lib/mysql
 # Names our volume
 volumes:
+  default_game_configs:
   mafia:

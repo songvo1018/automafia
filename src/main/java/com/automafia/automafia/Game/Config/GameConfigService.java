@@ -16,6 +16,10 @@ public class GameConfigService {
         this.gameConfigRepository = gameConfigRepository;
     }
 
+    public boolean isGameConfigsEmpty() {
+        return gameConfigRepository.count() == 0;
+    }
+
     public void save(GameConfig gameConfig) {
         gameConfigRepository.save(gameConfig);
     }
