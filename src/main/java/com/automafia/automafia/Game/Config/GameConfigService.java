@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GameConfigService {
@@ -14,6 +15,10 @@ public class GameConfigService {
 
     public GameConfigService(GameConfigRepository gameConfigRepository) {
         this.gameConfigRepository = gameConfigRepository;
+    }
+
+    public List<GameConfig> findAllConfig() {
+        return (List<GameConfig>) this.gameConfigRepository.findAll();
     }
 
     public boolean isGameConfigsEmpty() {
@@ -85,5 +90,9 @@ public class GameConfigService {
             count++;
         }
         return count;
+    }
+
+    public Optional<GameConfig> findById(Long gameConfigId) {
+        return gameConfigRepository.findById(gameConfigId);
     }
 }
