@@ -69,7 +69,7 @@ public class Game {
     public Game(String creatorName, GameConfig gameConfig) {
         this.creatorName = creatorName;
         this.countConnectedUsers = 1;
-        this.gameKey = creatorName.hashCode();
+        this.gameKey = Integer.parseInt(String.valueOf(Math.round((Math.random() + 1) * 31)));
         this.finished = false;
         this.gameConfig = gameConfig;
     }
