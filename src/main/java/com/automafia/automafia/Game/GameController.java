@@ -1,5 +1,7 @@
 package com.automafia.automafia.Game;
 
+import com.automafia.automafia.Game.Config.GameConfig;
+import com.automafia.automafia.Game.Config.GameConfigService;
 import com.automafia.automafia.User.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,13 +14,15 @@ import java.util.List;
 @RequestMapping("/api")
 public class GameController {
     private final GameService gameService;
+    private final GameConfigService gameConfigService;
 
-    public GameController(GameService gameService) {
+    public GameController(GameService gameService, GameConfigService gameConfigService) {
         this.gameService = gameService;
+        this.gameConfigService = gameConfigService;
     }
 
     /**
-     * HEALTH
+     * INITIALIZE DEFAULT CONFIGS ONE TIME
      * @return String
      */
     @RequestMapping(value = "/default-configs", method = RequestMethod.GET, produces = "application/json")
@@ -34,6 +38,17 @@ public class GameController {
             return ResponseEntity.ok().body("ALREADY INITIALIZED");
         }
     }
+
+    /**
+     * GET ALL GAMES CONFIGS
+     * @return ResponseEntity<List<GameConfig>>
+     */
+    @RequestMapping(value = "/game-configs", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    ResponseEntity<List<GameConfig>> gameConfigs() {
+        return ResponseEntity.ok().body(gameConfigService.findAllConfig());
+    }
+
 
     /**
      * GET ALL GAMES INFO
@@ -85,7 +100,7 @@ public class GameController {
     ResponseEntity<Game> connectTo(
             @PathVariable long gameId,
             @RequestParam("username") String username) {
-        if (null == username || "".equals(username) || "" == username) {
+        if (null == username || "".equals(username)) {
             throw new IllegalArgumentException("{\"error\":\"At least one parameter is invalid or not supplied\"}");
         }
         return ResponseEntity.ok().body(gameService.connectTo(gameId, username));
@@ -105,6 +120,15 @@ public class GameController {
             @RequestParam("isMafiaUnanimousDecision") boolean isMafiaUnanimousDecision
     ) {
         return ResponseEntity.ok().body(gameService.startGame(creatorName, usersCount, isManiacExist, isDoctorExist, isMafiaUnanimousDecision));
+    }
+
+    @PostMapping
+    @RequestMapping(value = "/create-on-config", method = RequestMethod.POST, produces = "application/json")
+    ResponseEntity<Integer> create(
+            @RequestParam("creator") String creatorName,
+            @RequestParam("gameConfigId") String gameConfigId
+    ) {
+        return ResponseEntity.ok().body(gameService.startGame(creatorName, Long.valueOf(gameConfigId)).getGameKey());
     }
 
     /**
