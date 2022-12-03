@@ -43,23 +43,46 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public Game startGame(String creator, int usersCount, boolean isManiacExist, boolean isDoctorExist, boolean isMafiaUnanimousDecision) {
+    public Game startGame(String creatorName, int usersCount, boolean isManiacExist, boolean isDoctorExist, boolean isMafiaUnanimousDecision) {
         GameConfig gameConfig = new GameConfig();
         gameConfig.init(isDoctorExist, isManiacExist, isMafiaUnanimousDecision, usersCount);
         gameConfigService.save(gameConfig);
 
-        Game createdGame = new Game(creator, gameConfig);
-        Round currentRound = roundService.createNewRound(0);
-        createdGame.setCurrentRoundId(currentRound.getId());
-
+        Game createdGame = createNewGame(creatorName, gameConfig);
         gameRepository.save(createdGame);
         GameInfo gameInfo = getGameInfo(createdGame.getId());
-        User user = userService.createNewUser(createdGame.getId(), creator,
+        User user = userService.createNewUser(createdGame.getId(), creatorName,
                 gameConfigService.getFreeRolesForGame(gameInfo));
         createdGame.setUsersConnectedCount(userService.getCountConnectedUsersToGame(createdGame.getId()));
+//        actualize gameInfo
+        gameInfo = getGameInfo(createdGame.getId());
+        createdGame.setAcceptedRoles(gameConfigService.getAcceptedRolesForGame(gameConfig).toString());
+        createdGame.setFreeRoles(gameConfigService.getFreeRolesForGame(gameInfo).toString());
+        createdGame.setCountNightUsers(gameConfigService.getCountNightUsers(gameConfig));
+        gameRepository.save(createdGame);
+        return createdGame;
+    }
+
+    public Game createNewGame(String creatorName, GameConfig gameConfig) {
+//        TODO: CHECK USER NAME AND ID ON ALREADY CREATED GAME
+        Game createdGame = new Game(creatorName, gameConfig);
+        Round currentRound = roundService.createNewRound(0);
+        createdGame.setCurrentRoundId(currentRound.getId());
+        return createdGame;
+    }
 
 
+    public Game startGame(String creatorName, Long gameConfigId) {
+        Optional<GameConfig> foundedGameConfig = gameConfigService.findById(gameConfigId);
+        if (!foundedGameConfig.isPresent()) throw new IllegalArgumentException("Game config not found");
 
+        GameConfig gameConfig = foundedGameConfig.get();
+
+        Game createdGame = createNewGame(creatorName, gameConfig);
+        gameRepository.save(createdGame);
+        GameInfo gameInfo = getGameInfo(createdGame.getId());
+        User user = userService.createNewUser(createdGame.getId(), creatorName, gameConfigService.getFreeRolesForGame(gameInfo));
+        createdGame.setUsersConnectedCount(userService.getCountConnectedUsersToGame(createdGame.getId()));
 //        actualize gameInfo
         gameInfo = getGameInfo(createdGame.getId());
         createdGame.setAcceptedRoles(gameConfigService.getAcceptedRolesForGame(gameConfig).toString());
@@ -83,6 +106,7 @@ public class GameService implements IGameService {
     public GameInfo getGameInfo(long id) {
         Game game = gameRepository.findById(id);
         Optional<Round> currentRound = roundService.getRoundById(game.getCurrentRoundId());
+        if (!currentRound.isPresent()) throw new IllegalArgumentException("Round not found");
         List<User> usersInGame = userService.findByGameId(id);
         GameInfo gameInfo = new GameInfo();
         gameInfo.init(game, usersInGame, currentRound.get());
@@ -117,7 +141,7 @@ public class GameService implements IGameService {
         if (currentRound.isPresent()) {
             User user = userService.findById(userId).get();
             User target = userService.findById(targetId).get();
-            if(user.getMoveStatus() == MoveStatus.MOVED) {
+            if (user.getMoveStatus() == MoveStatus.MOVED) {
                 return false;
             }
             currentRound.get().setTarget(userId, targetId);
@@ -184,6 +208,7 @@ public class GameService implements IGameService {
     public boolean isGameConfigsIsEmpty() {
         return gameConfigService.isGameConfigsEmpty();
     }
+
     public void createGameConfig(boolean isDoctorExist, boolean isManiacExist, int usersCount) {
         GameConfig gameConfig = new GameConfig();
         gameConfig.init(isDoctorExist, isManiacExist, true, usersCount);
